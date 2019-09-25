@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.as.lingod.dao.FaProductLingoCalcMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.as.lingod.domain.FaProductLingoCalc">
+        <id column="id" property="id" />
+        <result column="xuph" property="xuph" />
+        <result column="xuphs" property="xuphs" />
+        <result column="rnak" property="rnak" />
+        <result column="production" property="production" />
+        <result column="iepoh" property="iepoh" />
+        <result column="iepohs" property="iepohs" />
+        <result column="availa" property="availa" />
+        <result column="allowance" property="allowance" />
+        <result column="stdct" property="stdct" />
+    </resultMap>
+
+</mapper>

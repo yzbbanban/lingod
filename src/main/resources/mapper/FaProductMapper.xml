@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.as.lingod.dao.FaProductMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.as.lingod.domain.FaProduct">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="edition" property="edition" />
+        <result column="ctime" property="ctime" />
+        <result column="cpeople" property="cpeople" />
+        <result column="lname" property="lname" />
+        <result column="lcode" property="lcode" />
+        <result column="ltype" property="ltype" />
+        <result column="purect" property="purect" />
+        <result column="allowance" property="allowance" />
+        <result column="stdct" property="stdct" />
+        <result column="group" property="group" />
+        <result column="hard" property="hard" />
+        <result column="level" property="level" />
+        <result column="memo" property="memo" />
+        <result column="materiel" property="materiel" />
+        <result column="xuhao" property="xuhao" />
+    </resultMap>
+
+</mapper>
