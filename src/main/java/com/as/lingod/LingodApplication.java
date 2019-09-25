@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(scanBasePackages = {"com.as.lingod"})
-@MapperScan("com.as.lingid.dao")
+@MapperScan("com.as.lingod.dao")
 public class LingodApplication {
 
     public static void main(String[] args) {

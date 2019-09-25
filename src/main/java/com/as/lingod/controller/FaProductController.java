@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,13 +21,14 @@ import java.util.List;
  * @author ban
  * @since 2019-09-25
  */
-@RestController("/v1/faProduct")
+@RestController
+@RequestMapping("/v1/faProduct")
 public class FaProductController {
 
     @Autowired
     private FaProductService faProductService;
 
-    @GetMapping()
+    @GetMapping(value = "list")
     public ResultJson<List<FaProduct>> getList() {
         Wrapper<FaProduct> wrapper=new EntityWrapper<>();
         List<FaProduct> list = faProductService.selectList(wrapper);

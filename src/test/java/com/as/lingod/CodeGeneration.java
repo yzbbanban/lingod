@@ -20,7 +20,7 @@ public class CodeGeneration {
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir("D:/");//输出文件路径
+        gc.setOutputDir("/Users/YZBbanban/Desktop");//输出文件路径
         gc.setFileOverride(true);
         gc.setActiveRecord(false);// 不需要ActiveRecord特性的请改为false
         gc.setEnableCache(false);// XML 二级缓存
@@ -51,7 +51,7 @@ public class CodeGeneration {
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
         strategy.setInclude(new String[]{"fa_product",
                 "fa_product_lingo",
-                "fa_product_lingo_calc"}); // 需要生成的表
+                "fa_product_lingo_calc","fa_flow","fa_main"}); // 需要生成的表
 
         strategy.setSuperServiceClass(null);
         strategy.setSuperServiceImplClass(null);

@@ -1,6 +1,6 @@
 package com.as.lingod.dao;
 
-import com.as.lingod.domain.FaProductLingoCalc;
+import com.as.lingod.domain.FaFlow;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -8,9 +8,9 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  *  Mapper 接口
  * </p>
  *
- * @author ban
+ * @author ban123
  * @since 2019-09-25
  */
-public interface FaProductLingoCalcMapper extends BaseMapper<FaProductLingoCalc> {
+public interface FaFlowMapper extends BaseMapper<FaFlow> {
 
 }
