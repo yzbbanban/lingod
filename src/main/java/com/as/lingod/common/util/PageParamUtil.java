@@ -1,7 +1,7 @@
 package com.as.lingod.common.util;
 
 
-import com.as.lingod.domain.PageParamDTO;
+import com.as.lingod.domain.dto.PageParamDTO;
 
 /**
  * Created by brander on 2019/1/15

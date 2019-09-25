@@ -1,4 +1,4 @@
-package com.as.lingod.domain;
+package com.as.lingod.domain.dto;
 
 
 import io.swagger.annotations.ApiModel;
