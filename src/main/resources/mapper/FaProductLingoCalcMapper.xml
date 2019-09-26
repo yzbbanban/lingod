@@ -4,16 +4,44 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.as.lingod.domain.FaProductLingoCalc">
-        <id column="id" property="id" />
-        <result column="xuph" property="xuph" />
-        <result column="xuphs" property="xuphs" />
-        <result column="rnak" property="rnak" />
-        <result column="production" property="production" />
-        <result column="iepoh" property="iepoh" />
-        <result column="iepohs" property="iepohs" />
-        <result column="availa" property="availa" />
-        <result column="allowance" property="allowance" />
-        <result column="stdct" property="stdct" />
+        <id column="id" property="id"/>
+        <result column="xuph" property="xuph"/>
+        <result column="xuphs" property="xuphs"/>
+        <result column="rnak" property="rnak"/>
+        <result column="production" property="production"/>
+        <result column="iepoh" property="iepoh"/>
+        <result column="iepohs" property="iepohs"/>
+        <result column="availa" property="availa"/>
+        <result column="totalallowance" property="totalallowance"/>
+        <result column="totalstdct" property="totalstdct"/>
     </resultMap>
+    <sql id="BaseResult">
+        fpl.id,fpl.edition,fpl.calcId,fpl.ctime,
+        fpl.purect,fpl.allowance,fpl.stdct,fpl.xuhaolist,
+        fpl.protype,fpl.usercount,fpl.peocount
+    </sql>
+    <sql id="BaseCalcResult">
+        fplc.xuph,fplc.xuphs,
+        fplc.rnak,fplc.production,
+        fplc.iepoh,fplc.iepohs,fplc.availa,
+        fplc.totalallowance,fplc.totalstdct
+    </sql>
+
+    <select id="selectProList" resultType="com.as.lingod.domain.vo.FaProductLingoVO">
+        SELECT
+        <include refid="BaseResult"></include>
+        ,
+        <include refid="BaseCalcResult"></include>
+        FROM
+        fa_product_lingo fpl
+        LEFT JOIN fa_product_lingo_calc fplc
+        ON fpl.calcId=fpl.id
+        WHERE
+        fpl.edition=#{edition}
+        AND
+        fpl.protype=#{protype}
+        AND
+        fpl.peocount=#{peocount}
+    </select>
 
 </mapper>

@@ -1,10 +1,8 @@
-package com.as.lingod.domain;
+package com.as.lingod.domain.vo;
 
-import com.baomidou.mybatisplus.enums.IdType;
-import java.math.BigDecimal;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * <p>
@@ -14,13 +12,49 @@ import java.io.Serializable;
  * @author ban
  * @since 2019-09-25
  */
-@TableName("fa_product_lingo_calc")
-public class FaProductLingoCalc implements Serializable {
+public class FaProductLingoVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+    /**
+     * 版别
+     */
+    private String edition;
+    /**
+     * 建立日期
+     */
+    private Date ctime;
+    /**
+     * PURE CT
+     */
+    private String purect;
+    /**
+     * 产品类型：1 成品 2 车缝成品
+     */
+    private Integer protype;
+    /**
+     * 宽放率
+     */
+    private String allowance;
+    /**
+     * STD CT
+     */
+    private String stdct;
+    /**
+     * 序号
+     */
+    private String xuhaolist;
+    /**
+     * 工序使用人数
+     */
+    private Integer usercount;
+    /**
+     * 人数
+     */
+    private Integer peocount;
+
+
     /**
      * 理论UPH
      */
@@ -62,6 +96,78 @@ public class FaProductLingoCalc implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getEdition() {
+        return edition;
+    }
+
+    public void setEdition(String edition) {
+        this.edition = edition;
+    }
+
+    public Date getCtime() {
+        return ctime;
+    }
+
+    public void setCtime(Date ctime) {
+        this.ctime = ctime;
+    }
+
+    public String getPurect() {
+        return purect;
+    }
+
+    public void setPurect(String purect) {
+        this.purect = purect;
+    }
+
+    public Integer getProtype() {
+        return protype;
+    }
+
+    public void setProtype(Integer protype) {
+        this.protype = protype;
+    }
+
+    public String getAllowance() {
+        return allowance;
+    }
+
+    public void setAllowance(String allowance) {
+        this.allowance = allowance;
+    }
+
+    public String getStdct() {
+        return stdct;
+    }
+
+    public void setStdct(String stdct) {
+        this.stdct = stdct;
+    }
+
+    public String getXuhaolist() {
+        return xuhaolist;
+    }
+
+    public void setXuhaolist(String xuhaolist) {
+        this.xuhaolist = xuhaolist;
+    }
+
+    public Integer getUsercount() {
+        return usercount;
+    }
+
+    public void setUsercount(Integer usercount) {
+        this.usercount = usercount;
+    }
+
+    public Integer getPeocount() {
+        return peocount;
+    }
+
+    public void setPeocount(Integer peocount) {
+        this.peocount = peocount;
     }
 
     public BigDecimal getXuph() {
@@ -120,6 +226,9 @@ public class FaProductLingoCalc implements Serializable {
         this.availa = availa;
     }
 
+    public String getTotalallowance() {
+        return totalallowance;
+    }
 
     public void setTotalallowance(String totalallowance) {
         this.totalallowance = totalallowance;
@@ -135,8 +244,17 @@ public class FaProductLingoCalc implements Serializable {
 
     @Override
     public String toString() {
-        return "FaProductLingoCalc{" +
+        return "FaProductLingoVO{" +
                 "id=" + id +
+                ", edition='" + edition + '\'' +
+                ", ctime=" + ctime +
+                ", purect='" + purect + '\'' +
+                ", protype=" + protype +
+                ", allowance='" + allowance + '\'' +
+                ", stdct='" + stdct + '\'' +
+                ", xuhaolist='" + xuhaolist + '\'' +
+                ", usercount=" + usercount +
+                ", peocount=" + peocount +
                 ", xuph=" + xuph +
                 ", xuphs=" + xuphs +
                 ", rnak=" + rnak +

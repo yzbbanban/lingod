@@ -38,6 +38,10 @@ public class FaProductLingo implements Serializable {
      */
     private String purect;
     /**
+     * 产品类型：1 成品 2 车缝成品
+     */
+    private Integer protype;
+    /**
      * 宽放率
      */
     private String allowance;
@@ -115,6 +119,18 @@ public class FaProductLingo implements Serializable {
         this.stdct = stdct;
     }
 
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Integer getProtype() {
+        return protype;
+    }
+
+    public void setProtype(Integer protype) {
+        this.protype = protype;
+    }
+
     public String getXuhaolist() {
         return xuhaolist;
     }
@@ -142,16 +158,17 @@ public class FaProductLingo implements Serializable {
     @Override
     public String toString() {
         return "FaProductLingo{" +
-        "id=" + id +
-        ", edition=" + edition +
-        ", calcId=" + calcId +
-        ", ctime=" + ctime +
-        ", purect=" + purect +
-        ", allowance=" + allowance +
-        ", stdct=" + stdct +
-        ", xuhaolist=" + xuhaolist +
-        ", usercount=" + usercount +
-        ", peocount=" + peocount +
-        "}";
+                "id=" + id +
+                ", edition='" + edition + '\'' +
+                ", calcId=" + calcId +
+                ", ctime=" + ctime +
+                ", purect='" + purect + '\'' +
+                ", protype=" + protype +
+                ", allowance='" + allowance + '\'' +
+                ", stdct='" + stdct + '\'' +
+                ", xuhaolist='" + xuhaolist + '\'' +
+                ", usercount=" + usercount +
+                ", peocount=" + peocount +
+                '}';
     }
 }

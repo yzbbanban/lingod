@@ -1,7 +1,11 @@
 package com.as.lingod.service;
 
 import com.as.lingod.domain.FaProductLingoCalc;
+import com.as.lingod.domain.dto.LingoProDTO;
+import com.as.lingod.domain.vo.FaProductLingoVO;
 import com.baomidou.mybatisplus.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,10 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface FaProductLingoCalcService extends IService<FaProductLingoCalc> {
 
+    /**
+     * 获取结果
+     * @param lingoProDTO 结果
+     * @return 结果
+     */
+    List<FaProductLingoVO> selectProList(LingoProDTO lingoProDTO);
 }
