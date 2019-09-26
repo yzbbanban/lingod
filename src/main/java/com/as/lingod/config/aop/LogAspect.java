@@ -34,7 +34,7 @@ public class LogAspect {
     /**
      * 申明一个切点 里面是 execution表达式
      */
-    @Pointcut("execution(* com.yzb.andong.controller..*.*(..))")
+    @Pointcut("execution(* com.as.lingod.controller..*.*(..))")
     private void controllerAspect() {
     }
 

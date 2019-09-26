@@ -35,7 +35,7 @@
         FROM
         fa_product_lingo fpl
         LEFT JOIN fa_product_lingo_calc fplc
-        ON fpl.calcId=fpl.id
+        ON fpl.calcId=fplc.id
         WHERE
         fpl.edition=#{edition}
         AND

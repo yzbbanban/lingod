@@ -1,19 +1,24 @@
 package com.as.lingod.common.util;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
 import java.util.List;
 
 /**
  * Created by brander on 2019/1/14
  */
-@ApiModel("列表")
-public class ResultList<T> {
 
-    @ApiModelProperty("数量")
+/**
+ * 列表
+ *
+ * @param <T>
+ */
+public class ResultList<T> {
+    /**
+     * 数量
+     */
     private Integer count;
-    @ApiModelProperty("列表数据")
+    /**
+     * 列表数据
+     */
     private List<T> dataList;
 
     public ResultList() {
