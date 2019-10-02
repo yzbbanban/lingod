@@ -1,14 +1,18 @@
 package com.as.lingod.domain;
 
 import com.baomidou.mybatisplus.enums.IdType;
+
+import java.math.BigDecimal;
 import java.util.Date;
+
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.io.Serializable;
 
 /**
  * <p>
- * 
+ * <p>
  * </p>
  *
  * @author ban
@@ -32,7 +36,7 @@ public class FaProductLingo implements Serializable {
     /**
      * 建立日期
      */
-    private Date ctime;
+    private BigDecimal ctime;
     /**
      * PURE CT
      */
@@ -49,6 +53,14 @@ public class FaProductLingo implements Serializable {
      * STD CT
      */
     private String stdct;
+    /**
+     * 产量
+     */
+    private BigDecimal production;
+    /**
+     * 负载
+     */
+    private BigDecimal load;
     /**
      * 序号
      */
@@ -87,11 +99,11 @@ public class FaProductLingo implements Serializable {
         this.calcId = calcId;
     }
 
-    public Date getCtime() {
+    public BigDecimal getCtime() {
         return ctime;
     }
 
-    public void setCtime(Date ctime) {
+    public void setCtime(BigDecimal ctime) {
         this.ctime = ctime;
     }
 
@@ -109,6 +121,14 @@ public class FaProductLingo implements Serializable {
 
     public void setAllowance(String allowance) {
         this.allowance = allowance;
+    }
+
+    public BigDecimal getProduction() {
+        return production;
+    }
+
+    public void setProduction(BigDecimal production) {
+        this.production = production;
     }
 
     public String getStdct() {
@@ -155,6 +175,14 @@ public class FaProductLingo implements Serializable {
         this.peocount = peocount;
     }
 
+    public BigDecimal getLoad() {
+        return load;
+    }
+
+    public void setLoad(BigDecimal load) {
+        this.load = load;
+    }
+
     @Override
     public String toString() {
         return "FaProductLingo{" +
@@ -166,6 +194,8 @@ public class FaProductLingo implements Serializable {
                 ", protype=" + protype +
                 ", allowance='" + allowance + '\'' +
                 ", stdct='" + stdct + '\'' +
+                ", production=" + production +
+                ", load=" + load +
                 ", xuhaolist='" + xuhaolist + '\'' +
                 ", usercount=" + usercount +
                 ", peocount=" + peocount +
