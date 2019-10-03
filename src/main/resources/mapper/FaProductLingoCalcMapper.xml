@@ -7,7 +7,6 @@
         <id column="id" property="id"/>
         <result column="xuph" property="xuph"/>
         <result column="xuphs" property="xuphs"/>
-        <result column="rnak" property="rnak"/>
         <result column="production" property="production"/>
         <result column="iepoh" property="iepoh"/>
         <result column="iepohs" property="iepohs"/>
@@ -22,7 +21,7 @@
     </sql>
     <sql id="BaseCalcResult">
         fplc.xuph,fplc.xuphs,
-        fplc.rnak,fplc.production,
+        fplc.production,
         fplc.iepoh,fplc.iepohs,fplc.availa,
         fplc.totalallowance,fplc.totalstdct
     </sql>

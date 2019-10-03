@@ -1,14 +1,17 @@
 package com.as.lingod.domain;
 
 import com.baomidou.mybatisplus.enums.IdType;
+
 import java.math.BigDecimal;
+
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.io.Serializable;
 
 /**
  * <p>
- * 
+ * <p>
  * </p>
  *
  * @author ban
@@ -29,7 +32,6 @@ public class FaProductLingoCalc implements Serializable {
      * UPH标准
      */
     private BigDecimal xuphs;
-    private BigDecimal rnak;
     /**
      * 日产能
      */
@@ -55,6 +57,25 @@ public class FaProductLingoCalc implements Serializable {
      */
     private String totalstdct;
 
+    private String protype;
+
+    private String totalpeo;
+
+    public String getProtype() {
+        return protype;
+    }
+
+    public void setProtype(String protype) {
+        this.protype = protype;
+    }
+
+    public String getTotalpeo() {
+        return totalpeo;
+    }
+
+    public void setTotalpeo(String totalpeo) {
+        this.totalpeo = totalpeo;
+    }
 
     public Integer getId() {
         return id;
@@ -80,13 +101,6 @@ public class FaProductLingoCalc implements Serializable {
         this.xuphs = xuphs;
     }
 
-    public BigDecimal getRnak() {
-        return rnak;
-    }
-
-    public void setRnak(BigDecimal rnak) {
-        this.rnak = rnak;
-    }
 
     public BigDecimal getProduction() {
         return production;
@@ -133,19 +147,26 @@ public class FaProductLingoCalc implements Serializable {
         this.totalstdct = totalstdct;
     }
 
+
+
+    public String getTotalallowance() {
+        return totalallowance;
+    }
+
     @Override
     public String toString() {
         return "FaProductLingoCalc{" +
                 "id=" + id +
                 ", xuph=" + xuph +
                 ", xuphs=" + xuphs +
-                ", rnak=" + rnak +
                 ", production=" + production +
                 ", iepoh=" + iepoh +
                 ", iepohs=" + iepohs +
                 ", availa=" + availa +
                 ", totalallowance='" + totalallowance + '\'' +
                 ", totalstdct='" + totalstdct + '\'' +
+                ", protype='" + protype + '\'' +
+                ", totalpeo='" + totalpeo + '\'' +
                 '}';
     }
 }

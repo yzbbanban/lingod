@@ -1,14 +1,21 @@
 package com.as.lingod;
 
+import com.as.lingod.dao.FaProductLingoCalcMapper;
+import com.as.lingod.dao.FaProductLingoMapper;
+import com.as.lingod.domain.FaMain;
 import com.as.lingod.domain.FaProductLingo;
+import com.as.lingod.domain.FaProductLingoCalc;
 import com.google.gson.Gson;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,7 +23,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.*;
 
-//@RunWith(SpringRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest
 public class LingodApplicationTests {
 
@@ -24,11 +31,76 @@ public class LingodApplicationTests {
     private static final String EXCEL_XLS = ".xls";
     private static final String EXCEL_XLSX = ".xlsm";
 
+    @Autowired
+    private FaProductLingoMapper faProductLingoMapper;
+
+    @Autowired
+    private FaProductLingoCalcMapper faProductLingoCalcMapper;
+
+    @Test
+    public void addMain() {
+
+        String path = "/Users/YZBbanban/Desktop/ll2.xlsm";
+        try {
+            addMainExcel(path);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void addMainExcel(String path) throws Exception {
+        File excelFile = new File(path);//创建excel文件对象
+        InputStream is = new FileInputStream(excelFile);//创建输入流对象
+        checkExcelVaild(excelFile);
+        Workbook workbook = getWorkBook(is, excelFile);
+//        Workbook workbook = WorkbookFactory.create(is);//同时支持2003、2007、2010
+//        获取Sheet数量
+        int sheetNum = workbook.getNumberOfSheets();
+        System.out.println("sheetNum===>" + sheetNum);
+//        FormulaEvaluator formulaEvaluator = null;
+//        遍历工作簿中的sheet,第一层循环所有sheet表
+        Sheet sheet = workbook.getSheetAt(3);
+        System.out.println("表单行数：" + sheet.getLastRowNum());
+        List<FaProductLingoCalc> calcList = new ArrayList<>();
+        for (int cellIndex = 14; cellIndex < 37; cellIndex++) {
+
+            //2-10
+            FaProductLingoCalc faProductLingoCalc = new FaProductLingoCalc();
+            //1成品，2 车缝成品
+            faProductLingoCalc.setProtype("1");
+
+            faProductLingoCalc.setTotalpeo(getNum(sheet, 2, cellIndex));
+
+            faProductLingoCalc.setAvaila(new BigDecimal(getNum(sheet, 9, cellIndex)));
+            faProductLingoCalc.setIepoh(new BigDecimal(getNum(sheet, 8, cellIndex)));
+            faProductLingoCalc.setIepohs(new BigDecimal(getNum(sheet, 10, cellIndex)));
+            faProductLingoCalc.setProduction(new BigDecimal(getNum(sheet, 7, cellIndex)));
+            faProductLingoCalc.setTotalallowance("" + 10);
+            faProductLingoCalc.setXuph(new BigDecimal(getNum(sheet, 7, cellIndex)));
+            faProductLingoCalc.setXuphs(new BigDecimal(getNum(sheet, 3, cellIndex)));
+            calcList.add(faProductLingoCalc);
+        }
+
+        for (int i = 0; i < calcList.size(); i++) {
+            faProductLingoCalcMapper.insert(calcList.get(i));
+        }
+
+    }
+
+    private String getNum(Sheet sheet, int r, int cellIndex) {
+        Row row = sheet.getRow(r);
+        Cell cell = row.getCell(cellIndex);
+        //数据结果
+        String num = getCellValue(cell);
+        return num;
+    }
+
 
     @Test
     public void contextLoads() {
 
-        String path = "/Users/YZBbanban/Desktop/ll1.xlsm";
+        String path = "/Users/YZBbanban/Desktop/ll2.xlsm";
         try {
             readExcelInfo(path);
         } catch (Exception e) {
@@ -42,7 +114,7 @@ public class LingodApplicationTests {
      *
      * @throws Exception
      */
-    public static List<List<String>> readExcelInfo(String url) throws Exception {
+    public List<List<String>> readExcelInfo(String url) throws Exception {
         /*
          * workbook:工作簿,就是整个Excel文档
          * sheet:工作表
@@ -95,30 +167,32 @@ public class LingodApplicationTests {
                     fa.setUsercount(Double.valueOf(num).intValue());
                     fa.setEdition("" + 1);
                     fa.setAllowance("10");
-                    fa.setProtype(1);
+//                    fa.setProtype(1);
+                    //车缝
+                    fa.setProtype(2);
                     //CT 115+o
                     Row ctrow = sheet.getRow(115 + o);
                     Cell ct = ctrow.getCell(cellIndex);
                     //数据结果
                     String ctnum = getCellValue(ct);
-                    fa.setCtime(new BigDecimal(ctnum));
+                    fa.setCtime(ctnum);
                     //pro 166+o
                     Row prorow = sheet.getRow(166 + o);
                     Cell pro = prorow.getCell(cellIndex);
                     //数据结果
                     String pronum = getCellValue(pro);
-                    fa.setProduction(new BigDecimal(pronum));
+                    fa.setProduction(pronum);
                     //负载
                     //load 115+o
                     Row loadrow = sheet.getRow(64 + o);
                     Cell load = loadrow.getCell(cellIndex);
                     //数据结果
                     String loadnum = getCellValue(load);
-                    fa.setLoad(new BigDecimal(loadnum));
+                    fa.setLoad(loadnum);
 
-                    fa.setCalcId(rowIndex - 12);
+//                    fa.setCalcId(rowIndex - 12);
 
-
+                    fa.setPeocount(key);
                     faList.add(fa);
 
                     list.put(key, faList);
@@ -142,14 +216,17 @@ public class LingodApplicationTests {
             }
         }
         System.out.println("=====>" + new Gson().toJson(list));
-//        Set<Map.Entry<Integer, List<FaProductLingo>>> entries = list.entrySet();
-//        while (entries.iterator().hasNext()){
-//            Map.Entry<Integer, List<FaProductLingo>> entry = entries.iterator().next();
-//            Integer key = entry.getKey();
-//            List<FaProductLingo> value = entry.getValue();
-//            System.out.println(key+":"+value);
-//
-//        }
+        Iterator<Map.Entry<Integer, List<FaProductLingo>>> entries = list.entrySet().iterator();
+        while (entries.hasNext()) {
+            Map.Entry<Integer, List<FaProductLingo>> entry = entries.next();
+            Integer key = entry.getKey();
+            List<FaProductLingo> value = entry.getValue();
+            System.out.println(key + ":" + value);
+            for (int i = 0; i < value.size(); i++) {
+                faProductLingoMapper.insert(value.get(i));
+            }
+
+        }
 
         is.close();
         return null;

@@ -11,6 +11,7 @@
         <result column="purect" property="purect" />
         <result column="allowance" property="allowance" />
         <result column="stdct" property="stdct" />
+        <result column="load" property="load" />
         <result column="xuhaolist" property="xuhaolist" />
         <result column="usercount" property="usercount" />
         <result column="peocount" property="peocount" />

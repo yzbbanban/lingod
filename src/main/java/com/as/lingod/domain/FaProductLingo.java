@@ -2,7 +2,6 @@ package com.as.lingod.domain;
 
 import com.baomidou.mybatisplus.enums.IdType;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotations.TableId;
@@ -36,7 +35,7 @@ public class FaProductLingo implements Serializable {
     /**
      * 建立日期
      */
-    private BigDecimal ctime;
+    private String ctime;
     /**
      * PURE CT
      */
@@ -56,11 +55,11 @@ public class FaProductLingo implements Serializable {
     /**
      * 产量
      */
-    private BigDecimal production;
+    private String production;
     /**
      * 负载
      */
-    private BigDecimal load;
+    private String load;
     /**
      * 序号
      */
@@ -99,11 +98,11 @@ public class FaProductLingo implements Serializable {
         this.calcId = calcId;
     }
 
-    public BigDecimal getCtime() {
+    public String getCtime() {
         return ctime;
     }
 
-    public void setCtime(BigDecimal ctime) {
+    public void setCtime(String ctime) {
         this.ctime = ctime;
     }
 
@@ -123,11 +122,11 @@ public class FaProductLingo implements Serializable {
         this.allowance = allowance;
     }
 
-    public BigDecimal getProduction() {
+    public String getProduction() {
         return production;
     }
 
-    public void setProduction(BigDecimal production) {
+    public void setProduction(String production) {
         this.production = production;
     }
 
@@ -175,11 +174,11 @@ public class FaProductLingo implements Serializable {
         this.peocount = peocount;
     }
 
-    public BigDecimal getLoad() {
+    public String getLoad() {
         return load;
     }
 
-    public void setLoad(BigDecimal load) {
+    public void setLoad(String load) {
         this.load = load;
     }
 

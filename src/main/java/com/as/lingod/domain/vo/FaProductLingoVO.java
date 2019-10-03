@@ -63,7 +63,6 @@ public class FaProductLingoVO implements Serializable {
      * UPH标准
      */
     private BigDecimal xuphs;
-    private BigDecimal rnak;
     /**
      * 日产能
      */
@@ -186,13 +185,6 @@ public class FaProductLingoVO implements Serializable {
         this.xuphs = xuphs;
     }
 
-    public BigDecimal getRnak() {
-        return rnak;
-    }
-
-    public void setRnak(BigDecimal rnak) {
-        this.rnak = rnak;
-    }
 
     public BigDecimal getProduction() {
         return production;
@@ -257,7 +249,6 @@ public class FaProductLingoVO implements Serializable {
                 ", peocount=" + peocount +
                 ", xuph=" + xuph +
                 ", xuphs=" + xuphs +
-                ", rnak=" + rnak +
                 ", production=" + production +
                 ", iepoh=" + iepoh +
                 ", iepohs=" + iepohs +
