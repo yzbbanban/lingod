@@ -56,10 +56,29 @@ public class FaProductLingoCalc implements Serializable {
      * STD CT
      */
     private String totalstdct;
+    private String name;
+    private Integer nameId;
 
     private String protype;
 
     private String totalpeo;
+
+
+    public Integer getNameId() {
+        return nameId;
+    }
+
+    public void setNameId(Integer nameId) {
+        this.nameId = nameId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getProtype() {
         return protype;
@@ -165,6 +184,8 @@ public class FaProductLingoCalc implements Serializable {
                 ", availa=" + availa +
                 ", totalallowance='" + totalallowance + '\'' +
                 ", totalstdct='" + totalstdct + '\'' +
+                ", name='" + name + '\'' +
+                ", nameId=" + nameId +
                 ", protype='" + protype + '\'' +
                 ", totalpeo='" + totalpeo + '\'' +
                 '}';

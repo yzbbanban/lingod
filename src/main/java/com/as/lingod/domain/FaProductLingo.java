@@ -33,9 +33,11 @@ public class FaProductLingo implements Serializable {
      */
     private Integer calcId;
     /**
-     * 建立日期
+     * CT
      */
     private String ctime;
+    private String name;
+    private Integer nameId;
     /**
      * PURE CT
      */
@@ -73,6 +75,21 @@ public class FaProductLingo implements Serializable {
      */
     private Integer peocount;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getNameId() {
+        return nameId;
+    }
+
+    public void setNameId(Integer nameId) {
+        this.nameId = nameId;
+    }
 
     public Integer getId() {
         return id;
@@ -188,13 +205,15 @@ public class FaProductLingo implements Serializable {
                 "id=" + id +
                 ", edition='" + edition + '\'' +
                 ", calcId=" + calcId +
-                ", ctime=" + ctime +
+                ", ctime='" + ctime + '\'' +
+                ", name='" + name + '\'' +
+                ", nameId=" + nameId +
                 ", purect='" + purect + '\'' +
                 ", protype=" + protype +
                 ", allowance='" + allowance + '\'' +
                 ", stdct='" + stdct + '\'' +
-                ", production=" + production +
-                ", load=" + load +
+                ", production='" + production + '\'' +
+                ", load='" + load + '\'' +
                 ", xuhaolist='" + xuhaolist + '\'' +
                 ", usercount=" + usercount +
                 ", peocount=" + peocount +

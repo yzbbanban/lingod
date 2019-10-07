@@ -7,6 +7,8 @@
         <id column="id" property="id"/>
         <result column="xuph" property="xuph"/>
         <result column="xuphs" property="xuphs"/>
+        <result column="name" property="name"/>
+        <result column="nameId" property="nameId"/>
         <result column="production" property="production"/>
         <result column="iepoh" property="iepoh"/>
         <result column="iepohs" property="iepohs"/>
@@ -15,7 +17,7 @@
         <result column="totalstdct" property="totalstdct"/>
     </resultMap>
     <sql id="BaseResult">
-        fpl.id,fpl.edition,fpl.calcId,fpl.ctime,
+        fpl.id,fpl.edition,fpl.calcId,fpl.ctime,fpl.nameId,fpl.name
         fpl.purect,fpl.allowance,fpl.stdct,fpl.xuhaolist,
         fpl.protype,fpl.usercount,fpl.peocount
     </sql>

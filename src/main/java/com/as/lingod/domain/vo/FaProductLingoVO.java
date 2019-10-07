@@ -24,7 +24,7 @@ public class FaProductLingoVO implements Serializable {
     /**
      * 建立日期
      */
-    private Date ctime;
+    private String ctime;
     /**
      * PURE CT
      */
@@ -105,11 +105,12 @@ public class FaProductLingoVO implements Serializable {
         this.edition = edition;
     }
 
-    public Date getCtime() {
+
+    public String getCtime() {
         return ctime;
     }
 
-    public void setCtime(Date ctime) {
+    public void setCtime(String ctime) {
         this.ctime = ctime;
     }
 

@@ -40,7 +40,7 @@ public class LingodApplicationTests {
     @Test
     public void addMain() {
 
-        String path = "/Users/YZBbanban/Desktop/ll2.xlsm";
+        String path = "/Users/YZBbanban/Desktop/ll-21.xlsm";
         try {
             addMainExcel(path);
         } catch (Exception e) {
@@ -63,15 +63,21 @@ public class LingodApplicationTests {
         Sheet sheet = workbook.getSheetAt(3);
         System.out.println("表单行数：" + sheet.getLastRowNum());
         List<FaProductLingoCalc> calcList = new ArrayList<>();
-        for (int cellIndex = 14; cellIndex < 37; cellIndex++) {
+        for (int cellIndex = 11; cellIndex < 37; cellIndex++) {
 
             //2-10
             FaProductLingoCalc faProductLingoCalc = new FaProductLingoCalc();
             //1成品，2 车缝成品
-            faProductLingoCalc.setProtype("1");
+            faProductLingoCalc.setProtype("2");
 
             faProductLingoCalc.setTotalpeo(getNum(sheet, 2, cellIndex));
+            //PC1GS一041614_WD1GS-0044_WD1GS-0039 1  5
+            //PC1GS一041614_WD1GS-0044_WD1GS-0039 2  5
 
+            //GS0373_GS0378_GS0380_GS0391_GS0392_GS3893_GS3896_PGS281_CQ0921 1  6
+            //GS0373_GS0378_GS0380_GS0391_GS0392_GS3893_GS3896_PGS281_CQ0921 2  6
+            faProductLingoCalc.setName("GS0373_GS0378_GS0380_GS0391_GS0392_GS3893_GS3896_PGS281_CQ0921");
+            faProductLingoCalc.setNameId(6);
             faProductLingoCalc.setAvaila(new BigDecimal(getNum(sheet, 9, cellIndex)));
             faProductLingoCalc.setIepoh(new BigDecimal(getNum(sheet, 8, cellIndex)));
             faProductLingoCalc.setIepohs(new BigDecimal(getNum(sheet, 10, cellIndex)));
@@ -85,7 +91,7 @@ public class LingodApplicationTests {
         for (int i = 0; i < calcList.size(); i++) {
             faProductLingoCalcMapper.insert(calcList.get(i));
         }
-
+//        Thread.sleep(10000);
     }
 
     private String getNum(Sheet sheet, int r, int cellIndex) {
@@ -100,7 +106,7 @@ public class LingodApplicationTests {
     @Test
     public void contextLoads() {
 
-        String path = "/Users/YZBbanban/Desktop/ll2.xlsm";
+        String path = "/Users/YZBbanban/Desktop/ll-21.xlsm";
         try {
             readExcelInfo(path);
         } catch (Exception e) {
@@ -140,14 +146,14 @@ public class LingodApplicationTests {
         //人员安排
         Map<Integer, List<FaProductLingo>> list = new HashMap<>();
         //列
-        for (int cellIndex = 14; cellIndex < 37; cellIndex++) {
+        for (int cellIndex = 11; cellIndex < 37; cellIndex++) {
             List<FaProductLingo> faList = new ArrayList<>();
 
             Integer key = cellIndex - 2;
             //需要保存 xuhaoList 的数据
             int xuhao = 10;
             //行
-            for (int rowIndex = 13; rowIndex < 38; rowIndex++) {
+            for (int rowIndex = 13; rowIndex < 34; rowIndex++) {
 //                System.out.println("==rowIndex==" + rowIndex);
                 Row row = sheet.getRow(rowIndex);
                 Cell cell = row.getCell(cellIndex);
@@ -164,11 +170,17 @@ public class LingodApplicationTests {
                     fa.setXuhaolist("" + r);
                     //
                     int o = rowIndex - 13;
+                    //PC1GS一041614_WD1GS-0044_WD1GS-0039 1  5
+                    //PC1GS一041614_WD1GS-0044_WD1GS-0039 2  5
+
+                    //GS0373_GS0378_GS0380_GS0391_GS0392_GS3893_GS3896_PGS281_CQ0921 1  6
+                    //GS0373_GS0378_GS0380_GS0391_GS0392_GS3893_GS3896_PGS281_CQ0921 2  6
+                    fa.setName("GS0373_GS0378_GS0380_GS0391_GS0392_GS3893_GS3896_PGS281_CQ0921");
+                    fa.setNameId(6);
                     fa.setUsercount(Double.valueOf(num).intValue());
                     fa.setEdition("" + 1);
                     fa.setAllowance("10");
-//                    fa.setProtype(1);
-                    //车缝
+                    //1成品，2车缝
                     fa.setProtype(2);
                     //CT 115+o
                     Row ctrow = sheet.getRow(115 + o);
