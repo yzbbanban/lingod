@@ -1,5 +1,8 @@
 package com.as.lingod.service.impl;
 
+import com.as.lingod.common.util.ResultJson;
+import com.as.lingod.dao.FaProductLingoMapper;
+import com.as.lingod.domain.FaProductLingo;
 import com.as.lingod.domain.FaProductLingoCalc;
 import com.as.lingod.dao.FaProductLingoCalcMapper;
 import com.as.lingod.domain.dto.LingoProDTO;
@@ -8,6 +11,7 @@ import com.as.lingod.service.FaProductLingoCalcService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,9 +29,24 @@ public class FaProductLingoCalcServiceImpl extends ServiceImpl<FaProductLingoCal
     @Autowired
     private FaProductLingoCalcMapper faProductLingoCalcMapper;
 
+    @Autowired
+    private FaProductLingoMapper faProductLingoMapper;
+
     @Override
     public List<FaProductLingoVO> selectProList(LingoProDTO lingoProDTO) {
 
         return faProductLingoCalcMapper.selectProList(lingoProDTO);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean add(FaProductLingoCalc faProductLingoCalc, FaProductLingo faProductLingo) {
+        int row = faProductLingoCalcMapper.insert(faProductLingoCalc);
+        int row2 = faProductLingoMapper.insert(faProductLingo);
+        if (row == 1 && row2 == 1) {
+            return true;
+        }
+        throw new RuntimeException("error");
+
     }
 }

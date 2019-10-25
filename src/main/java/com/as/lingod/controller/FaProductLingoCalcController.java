@@ -2,11 +2,16 @@ package com.as.lingod.controller;
 
 
 import com.as.lingod.common.util.ResultJson;
+import com.as.lingod.domain.FaProductLingo;
+import com.as.lingod.domain.FaProductLingoCalc;
 import com.as.lingod.domain.dto.LingoProDTO;
 import com.as.lingod.domain.vo.FaProductLingoVO;
 import com.as.lingod.service.FaProductLingoCalcService;
+import com.as.lingod.service.FaProductLingoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,6 +38,21 @@ public class FaProductLingoCalcController {
         List<FaProductLingoVO> list = faProductLingoCalcService.selectProList(lingoProDTO);
 
         return ResultJson.createBySuccess(list);
+    }
+
+    @PostMapping("add")
+    public ResultJson<String> addCalc(FaProductLingoCalc faProductLingoCalc, FaProductLingo faProductLingo) {
+
+        try {
+            if (faProductLingoCalcService.add(faProductLingoCalc, faProductLingo)) {
+                return ResultJson.createBySuccess();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultJson.createByError();
+        }
+
+        return ResultJson.createByError();
     }
 
 }
