@@ -5,6 +5,7 @@ import com.as.lingod.dao.FaProductLingoMapper;
 import com.as.lingod.domain.FaProductLingo;
 import com.as.lingod.domain.FaProductLingoCalc;
 import com.as.lingod.dao.FaProductLingoCalcMapper;
+import com.as.lingod.domain.dto.FaProductLingoDTO;
 import com.as.lingod.domain.dto.LingoProDTO;
 import com.as.lingod.domain.vo.FaProductLingoVO;
 import com.as.lingod.service.FaProductLingoCalcService;
@@ -38,15 +39,4 @@ public class FaProductLingoCalcServiceImpl extends ServiceImpl<FaProductLingoCal
         return faProductLingoCalcMapper.selectProList(lingoProDTO);
     }
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public boolean add(FaProductLingoCalc faProductLingoCalc, FaProductLingo faProductLingo) {
-        int row = faProductLingoCalcMapper.insert(faProductLingoCalc);
-        int row2 = faProductLingoMapper.insert(faProductLingo);
-        if (row == 1 && row2 == 1) {
-            return true;
-        }
-        throw new RuntimeException("error");
-
-    }
 }

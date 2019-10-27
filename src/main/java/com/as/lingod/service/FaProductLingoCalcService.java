@@ -2,6 +2,7 @@ package com.as.lingod.service;
 
 import com.as.lingod.domain.FaProductLingo;
 import com.as.lingod.domain.FaProductLingoCalc;
+import com.as.lingod.domain.dto.FaProductLingoDTO;
 import com.as.lingod.domain.dto.LingoProDTO;
 import com.as.lingod.domain.vo.FaProductLingoVO;
 import com.baomidou.mybatisplus.service.IService;
@@ -27,12 +28,4 @@ public interface FaProductLingoCalcService extends IService<FaProductLingoCalc> 
     List<FaProductLingoVO> selectProList(LingoProDTO lingoProDTO);
 
 
-    /**
-     * add
-     *
-     * @param faProductLingoCalc fac
-     * @param faProductLingo     fa
-     * @return re
-     */
-    boolean add(FaProductLingoCalc faProductLingoCalc, FaProductLingo faProductLingo);
 }

@@ -4,6 +4,7 @@ package com.as.lingod.controller;
 import com.as.lingod.common.util.ResultJson;
 import com.as.lingod.domain.FaProductLingo;
 import com.as.lingod.domain.FaProductLingoCalc;
+import com.as.lingod.domain.dto.FaProductLingoDTO;
 import com.as.lingod.domain.dto.LingoProDTO;
 import com.as.lingod.domain.vo.FaProductLingoVO;
 import com.as.lingod.service.FaProductLingoCalcService;
@@ -41,10 +42,10 @@ public class FaProductLingoCalcController {
     }
 
     @PostMapping("add")
-    public ResultJson<String> addCalc(FaProductLingoCalc faProductLingoCalc, FaProductLingo faProductLingo) {
+    public ResultJson<String> addCalc(FaProductLingoDTO dto) {
 
         try {
-            if (faProductLingoCalcService.add(faProductLingoCalc, faProductLingo)) {
+            if (faProductLingoCalcService.add(dto)) {
                 return ResultJson.createBySuccess();
             }
         } catch (Exception e) {
