@@ -15,6 +15,7 @@
         <result column="availa" property="availa"/>
         <result column="totalallowance" property="totalallowance"/>
         <result column="totalstdct" property="totalstdct"/>
+        <result column="edition" property="edition"/>
     </resultMap>
     <sql id="BaseResult">
         fpl.id,fpl.edition,fpl.calcId,fpl.ctime,fpl.nameId,fpl.name

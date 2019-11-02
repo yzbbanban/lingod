@@ -2,7 +2,6 @@ package com.as.lingod;
 
 import com.as.lingod.dao.FaProductLingoCalcMapper;
 import com.as.lingod.dao.FaProductLingoMapper;
-import com.as.lingod.domain.FaMain;
 import com.as.lingod.domain.FaProductLingo;
 import com.as.lingod.domain.FaProductLingoCalc;
 import com.google.gson.Gson;
@@ -40,7 +39,7 @@ public class LingodApplicationTests {
     @Test
     public void addMain() {
 
-        String path = "/Users/YZBbanban/Desktop/ll-21.xlsm";
+        String path = "/Users/YZBbanban/Desktop/WD1GS-0027.xlsm";
         try {
             addMainExcel(path);
         } catch (Exception e) {
@@ -60,15 +59,16 @@ public class LingodApplicationTests {
         System.out.println("sheetNum===>" + sheetNum);
 //        FormulaEvaluator formulaEvaluator = null;
 //        遍历工作簿中的sheet,第一层循环所有sheet表
-        Sheet sheet = workbook.getSheetAt(3);
+        Sheet sheet = workbook.getSheetAt(4);
+        System.out.println("==sheet=>" + sheet.getWorkbook());
         System.out.println("表单行数：" + sheet.getLastRowNum());
         List<FaProductLingoCalc> calcList = new ArrayList<>();
-        for (int cellIndex = 11; cellIndex < 37; cellIndex++) {
+        for (int cellIndex = 14; cellIndex < 38; cellIndex++) {
 
             //2-10
             FaProductLingoCalc faProductLingoCalc = new FaProductLingoCalc();
-            //1成品，2 车缝成品
-            faProductLingoCalc.setProtype("2");
+            //4成品，5 车缝成品 9 成品不含线外加工项目
+            faProductLingoCalc.setProtype("9");
 
             faProductLingoCalc.setTotalpeo(getNum(sheet, 2, cellIndex));
             //PC1GS一041614_WD1GS-0044_WD1GS-0039 1  5
@@ -76,8 +76,12 @@ public class LingodApplicationTests {
 
             //GS0373_GS0378_GS0380_GS0391_GS0392_GS3893_GS3896_PGS281_CQ0921 1  6
             //GS0373_GS0378_GS0380_GS0391_GS0392_GS3893_GS3896_PGS281_CQ0921 2  6
-            faProductLingoCalc.setName("GS0373_GS0378_GS0380_GS0391_GS0392_GS3893_GS3896_PGS281_CQ0921");
-            faProductLingoCalc.setNameId(6);
+
+            //WD1GS-0027 版别 2  typeId 9 nameId 9
+            //WD1GS-0028 版别 2  typeId 9 nameId 10
+            faProductLingoCalc.setName("WD1GS-0027");
+            faProductLingoCalc.setNameId(9);
+            faProductLingoCalc.setEdition(2);
             faProductLingoCalc.setAvaila(new BigDecimal(getNum(sheet, 9, cellIndex)));
             faProductLingoCalc.setIepoh(new BigDecimal(getNum(sheet, 8, cellIndex)));
             faProductLingoCalc.setIepohs(new BigDecimal(getNum(sheet, 10, cellIndex)));
@@ -106,7 +110,7 @@ public class LingodApplicationTests {
     @Test
     public void contextLoads() {
 
-        String path = "/Users/YZBbanban/Desktop/ll-21.xlsm";
+        String path = "/Users/YZBbanban/Desktop/WD1GS-0027.xlsm";
         try {
             readExcelInfo(path);
         } catch (Exception e) {
@@ -140,20 +144,19 @@ public class LingodApplicationTests {
         System.out.println("sheetNum===>" + sheetNum);
 //        FormulaEvaluator formulaEvaluator = null;
 //        遍历工作簿中的sheet,第一层循环所有sheet表
-        Sheet sheet = workbook.getSheetAt(3);
+        Sheet sheet = workbook.getSheetAt(4);
         System.out.println("表单行数：" + sheet.getLastRowNum());
 
         //人员安排
         Map<Integer, List<FaProductLingo>> list = new HashMap<>();
         //列
-        for (int cellIndex = 11; cellIndex < 37; cellIndex++) {
+        for (int cellIndex = 14; cellIndex < 38; cellIndex++) {
             List<FaProductLingo> faList = new ArrayList<>();
-
             Integer key = cellIndex - 2;
             //需要保存 xuhaoList 的数据
-            int xuhao = 10;
+            int xuhao = 60;
             //行
-            for (int rowIndex = 13; rowIndex < 34; rowIndex++) {
+            for (int rowIndex = 13; rowIndex < 38; rowIndex++) {
 //                System.out.println("==rowIndex==" + rowIndex);
                 Row row = sheet.getRow(rowIndex);
                 Cell cell = row.getCell(cellIndex);
@@ -175,19 +178,21 @@ public class LingodApplicationTests {
 
                     //GS0373_GS0378_GS0380_GS0391_GS0392_GS3893_GS3896_PGS281_CQ0921 1  6
                     //GS0373_GS0378_GS0380_GS0391_GS0392_GS3893_GS3896_PGS281_CQ0921 2  6
-                    fa.setName("GS0373_GS0378_GS0380_GS0391_GS0392_GS3893_GS3896_PGS281_CQ0921");
-                    fa.setNameId(6);
+                    //WD1GS-0027 版别 2  typeId 9 nameId 9
+                    //WD1GS-0028 版别 2  typeId 9 nameId 10
+                    fa.setName("WD1GS-0027");
+                    fa.setNameId(9);
                     fa.setUsercount(Double.valueOf(num).intValue());
-                    fa.setEdition("" + 1);
+                    fa.setEdition("" + 2);
                     fa.setAllowance("10");
-                    //1成品，2车缝
-                    fa.setProtype(2);
+                    //4成品，5车缝
+                    fa.setProtype(9);
                     //CT 115+o
                     Row ctrow = sheet.getRow(115 + o);
                     Cell ct = ctrow.getCell(cellIndex);
                     //数据结果
                     String ctnum = getCellValue(ct);
-                    fa.setCtime(ctnum);
+                    fa.setPurect(ctnum);
                     //pro 166+o
                     Row prorow = sheet.getRow(166 + o);
                     Cell pro = prorow.getCell(cellIndex);
@@ -222,8 +227,18 @@ public class LingodApplicationTests {
                     int r = Integer.parseInt(re) + 10;
                     fa.setXuhaolist(xuhaoList + "," + r);
                 }
-                xuhao += 10;
-
+//                switch (rowIndex) {
+//                    case 14:
+//                        xuhao += 20;
+//                        break;
+//                    case 23:
+//                        xuhao += 60;
+//                        break;
+//                    default:
+//                        xuhao += 10;
+//                        break;
+//
+//                }
 
             }
         }
@@ -304,6 +319,26 @@ public class LingodApplicationTests {
             message = "文件不是Excel";
             throw new Exception(message);
         }
+    }
+
+    @Test
+    public void testCalc() {
+
+        List<FaProductLingoCalc> list = faProductLingoCalcMapper.selectList(null);
+
+        for (int i = 0; i < list.size(); i++) {
+            int calcId = list.get(i).getId();
+            int peoc = Integer.parseInt(list.get(i).getTotalpeo());
+            System.out.println(calcId + "," + peoc);
+            List<Integer> cid = faProductLingoMapper.getFaProId(calcId, peoc);
+
+            System.out.println(cid);
+            for (int j = 0; j < cid.size(); j++) {
+                faProductLingoMapper.updateCalc(cid.get(j), calcId);
+            }
+
+        }
+
     }
 
 

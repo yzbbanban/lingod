@@ -4,17 +4,38 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.as.lingod.domain.FaProductLingo">
-        <id column="id" property="id" />
-        <result column="edition" property="edition" />
-        <result column="calcId" property="calcId" />
-        <result column="ctime" property="ctime" />
-        <result column="purect" property="purect" />
-        <result column="allowance" property="allowance" />
-        <result column="stdct" property="stdct" />
-        <result column="load" property="load" />
-        <result column="xuhaolist" property="xuhaolist" />
-        <result column="usercount" property="usercount" />
-        <result column="peocount" property="peocount" />
+        <id column="id" property="id"/>
+        <result column="edition" property="edition"/>
+        <result column="calcId" property="calcId"/>
+        <result column="protype" property="protype"/>
+        <result column="purect" property="purect"/>
+        <result column="allowance" property="allowance"/>
+        <result column="stdct" property="stdct"/>
+        <result column="load" property="load"/>
+        <result column="xuhaolist" property="xuhaolist"/>
+        <result column="usercount" property="usercount"/>
+        <result column="peocount" property="peocount"/>
+        <result column="production" property="production"/>
+        <result column="nameId" property="nameId"/>
+        <result column="name" property="name"/>
     </resultMap>
+    <update id="updateCalc">
+        UPDATE fa_product_lingo
+        SET calcId=#{calcId}
+        WHERE id=#{id}
+    </update>
+    <select id="getFaProId" resultType="java.lang.Integer">
+        SELECT
+            fl.id
+        FROM
+            fa_product_lingo_calc flc
+        INNER JOIN fa_product_lingo fl ON flc.protype = fl.protype
+        AND flc.nameId = fl.nameId
+        AND flc.totalpeo = fl.peocount
+        WHERE
+        flc.id=#{id}
+        and flc.totalpeo=#{totalPeo}
+    </select>
+
 
 </mapper>

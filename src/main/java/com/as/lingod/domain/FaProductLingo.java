@@ -35,7 +35,7 @@ public class FaProductLingo implements Serializable {
     /**
      * CT
      */
-    private String ctime;
+//    private String ctime;
     private String name;
     private Integer nameId;
     /**
@@ -43,7 +43,7 @@ public class FaProductLingo implements Serializable {
      */
     private String purect;
     /**
-     * 产品类型：1 成品 2 车缝成品
+     * 产品类型：4 成品 5 车缝成品
      */
     private Integer protype;
     /**
@@ -115,13 +115,13 @@ public class FaProductLingo implements Serializable {
         this.calcId = calcId;
     }
 
-    public String getCtime() {
-        return ctime;
-    }
+//    public String getCtime() {
+//        return ctime;
+//    }
 
-    public void setCtime(String ctime) {
-        this.ctime = ctime;
-    }
+//    public void setCtime(String ctime) {
+//        this.ctime = ctime;
+//    }
 
     public String getPurect() {
         return purect;
@@ -205,7 +205,7 @@ public class FaProductLingo implements Serializable {
                 "id=" + id +
                 ", edition='" + edition + '\'' +
                 ", calcId=" + calcId +
-                ", ctime='" + ctime + '\'' +
+//                ", ctime='" + ctime + '\'' +
                 ", name='" + name + '\'' +
                 ", nameId=" + nameId +
                 ", purect='" + purect + '\'' +

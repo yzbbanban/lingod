@@ -46,6 +46,7 @@ public class FaProductLingoCalc implements Serializable {
      * 利用率
      */
     private BigDecimal availa;
+    private Integer edition;
     /**
      * 宽放率
      */
@@ -61,6 +62,13 @@ public class FaProductLingoCalc implements Serializable {
 
     private String totalpeo;
 
+    public Integer getEdition() {
+        return edition;
+    }
+
+    public void setEdition(Integer edition) {
+        this.edition = edition;
+    }
 
     public Integer getNameId() {
         return nameId;
@@ -180,6 +188,7 @@ public class FaProductLingoCalc implements Serializable {
                 ", iepoh=" + iepoh +
                 ", iepohs=" + iepohs +
                 ", availa=" + availa +
+                ", edition=" + edition +
                 ", totalallowance='" + totalallowance + '\'' +
                 ", totalstdct='" + totalstdct + '\'' +
                 ", name='" + name + '\'' +
