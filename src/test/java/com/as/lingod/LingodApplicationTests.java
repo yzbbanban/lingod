@@ -36,10 +36,41 @@ public class LingodApplicationTests {
     @Autowired
     private FaProductLingoCalcMapper faProductLingoCalcMapper;
 
+    private static String fPath = "444WD1GS-0027";
+
+    /**
+     * 版别
+     */
+    private int edition = 2;
+
+
+    /**
+     * 类型 id
+     * // 1车缝 2包装 3线外加工
+     * // 4 成品: 1+2+3;
+     * // 5 车缝成品: 1+3;
+     * // 9 成品(不含线外加工)1+2;
+     * // 10 车缝成品(不含线外加工）1;
+     * // 11自定义: 1+2+3
+     * //   WD1GS-0027 版别 2  typeId 9 nameId 9
+     * //   WD1GS-0028 版别 2  typeId 9 nameId 10
+     */
+    private int tId = 4;
+
+    /**
+     * 名 id
+     */
+    private int nId = 9;
+
+    /**
+     * 名
+     */
+    private String tN = "WD1GS-0027";
+
     @Test
     public void addMain() {
 
-        String path = "/Users/YZBbanban/Desktop/WD1GS-0027.xlsm";
+        String path = "/Users/YZBbanban/Desktop/" + fPath + ".xlsm";
         try {
             addMainExcel(path);
         } catch (Exception e) {
@@ -68,7 +99,7 @@ public class LingodApplicationTests {
             //2-10
             FaProductLingoCalc faProductLingoCalc = new FaProductLingoCalc();
             //4成品，5 车缝成品 9 成品不含线外加工项目
-            faProductLingoCalc.setProtype("9");
+            faProductLingoCalc.setProtype("" + tId);
 
             faProductLingoCalc.setTotalpeo(getNum(sheet, 2, cellIndex));
             //PC1GS一041614_WD1GS-0044_WD1GS-0039 1  5
@@ -76,18 +107,23 @@ public class LingodApplicationTests {
 
             //GS0373_GS0378_GS0380_GS0391_GS0392_GS3893_GS3896_PGS281_CQ0921 1  6
             //GS0373_GS0378_GS0380_GS0391_GS0392_GS3893_GS3896_PGS281_CQ0921 2  6
-
+            // 1车缝 2包装 3线外加工
+            // 4 成品: 1+2+3;
+            // 5 车缝成品: 1+3;
+            // 9 成品(不含线外加工)1+2;
+            // 10 车缝成品(不含线外加工）1;
+            // 11自定义: 1+2+3
             //WD1GS-0027 版别 2  typeId 9 nameId 9
             //WD1GS-0028 版别 2  typeId 9 nameId 10
-            faProductLingoCalc.setName("WD1GS-0027");
-            faProductLingoCalc.setNameId(9);
-            faProductLingoCalc.setEdition(2);
+            faProductLingoCalc.setName(tN);
+            faProductLingoCalc.setNameId(nId);
+            faProductLingoCalc.setEdition(edition);
             faProductLingoCalc.setAvaila(new BigDecimal(getNum(sheet, 9, cellIndex)));
             faProductLingoCalc.setIepoh(new BigDecimal(getNum(sheet, 8, cellIndex)));
             faProductLingoCalc.setIepohs(new BigDecimal(getNum(sheet, 10, cellIndex)));
             faProductLingoCalc.setProduction(new BigDecimal(getNum(sheet, 7, cellIndex)));
             faProductLingoCalc.setTotalallowance("" + 10);
-            faProductLingoCalc.setXuph(new BigDecimal(getNum(sheet, 7, cellIndex)));
+            faProductLingoCalc.setXuph(new BigDecimal(getNum(sheet, 4, cellIndex)));
             faProductLingoCalc.setXuphs(new BigDecimal(getNum(sheet, 3, cellIndex)));
             calcList.add(faProductLingoCalc);
         }
@@ -110,7 +146,7 @@ public class LingodApplicationTests {
     @Test
     public void contextLoads() {
 
-        String path = "/Users/YZBbanban/Desktop/WD1GS-0027.xlsm";
+        String path = "/Users/YZBbanban/Desktop/" + fPath + ".xlsm";
         try {
             readExcelInfo(path);
         } catch (Exception e) {
@@ -153,10 +189,10 @@ public class LingodApplicationTests {
         for (int cellIndex = 14; cellIndex < 38; cellIndex++) {
             List<FaProductLingo> faList = new ArrayList<>();
             Integer key = cellIndex - 2;
-            //需要保存 xuhaoList 的数据
-            int xuhao = 60;
+            //需要保存 xuhaoList 的数据 起始序号
+            int xuhao = 10;
             //行
-            for (int rowIndex = 13; rowIndex < 38; rowIndex++) {
+            for (int rowIndex = 13; rowIndex < 43; rowIndex++) {
 //                System.out.println("==rowIndex==" + rowIndex);
                 Row row = sheet.getRow(rowIndex);
                 Cell cell = row.getCell(cellIndex);
@@ -180,13 +216,19 @@ public class LingodApplicationTests {
                     //GS0373_GS0378_GS0380_GS0391_GS0392_GS3893_GS3896_PGS281_CQ0921 2  6
                     //WD1GS-0027 版别 2  typeId 9 nameId 9
                     //WD1GS-0028 版别 2  typeId 9 nameId 10
-                    fa.setName("WD1GS-0027");
-                    fa.setNameId(9);
+                    // 1车缝 2包装 3线外加工
+                    // 4 成品: 1+2+3;
+                    // 5 车缝成品: 1+3;
+                    // 9 成品(不含线外加工)1+2;
+                    // 10 车缝成品(不含线外加工）1;
+                    // 11自定义: 1+2+3
+                    fa.setName(tN);
+                    fa.setNameId(nId);
                     fa.setUsercount(Double.valueOf(num).intValue());
-                    fa.setEdition("" + 2);
+                    fa.setEdition("" + edition);
                     fa.setAllowance("10");
                     //4成品，5车缝
-                    fa.setProtype(9);
+                    fa.setProtype(tId);
                     //CT 115+o
                     Row ctrow = sheet.getRow(115 + o);
                     Cell ct = ctrow.getCell(cellIndex);
