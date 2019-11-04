@@ -30,7 +30,7 @@ public class FaProductLingoController {
     private FaProductLingoCalcService faProductLingoCalcService;
 
     @PostMapping("save")
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public ResultJson<String> saveLingoResult(FaProductLingoDTO dto) {
         boolean row = faProductLingoService.insertBatch(dto.getFaProductLingo());
         boolean r = faProductLingoCalcService.insertAllColumn(dto.getFaProductLingoCalc());

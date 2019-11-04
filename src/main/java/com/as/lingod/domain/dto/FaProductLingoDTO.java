@@ -7,6 +7,8 @@ import java.util.List;
 
 /**
  * Created by brander on 2019/9/25
+ *
+ * @author ban
  */
 public class FaProductLingoDTO {
     private List<FaProductLingo> faProductLingo;
