@@ -36,7 +36,7 @@ public class LingodApplicationTests {
     @Autowired
     private FaProductLingoCalcMapper faProductLingoCalcMapper;
 
-    private static String fPath = "444WD1GS-0027";
+    private static String fPath = "1010WD1GS-0028";
 
     /**
      * 版别
@@ -55,17 +55,17 @@ public class LingodApplicationTests {
      * //   WD1GS-0027 版别 2  typeId 9 nameId 9
      * //   WD1GS-0028 版别 2  typeId 9 nameId 10
      */
-    private int tId = 4;
+    private int tId = 10;
 
     /**
      * 名 id
      */
-    private int nId = 9;
+    private int nId = 10;
 
     /**
      * 名
      */
-    private String tN = "WD1GS-0027";
+    private String tN = "WD1GS-0028";
 
     @Test
     public void addMain() {
@@ -94,7 +94,7 @@ public class LingodApplicationTests {
         System.out.println("==sheet=>" + sheet.getWorkbook());
         System.out.println("表单行数：" + sheet.getLastRowNum());
         List<FaProductLingoCalc> calcList = new ArrayList<>();
-        for (int cellIndex = 14; cellIndex < 38; cellIndex++) {
+        for (int cellIndex = 15; cellIndex < 38; cellIndex++) {
 
             //2-10
             FaProductLingoCalc faProductLingoCalc = new FaProductLingoCalc();
@@ -192,7 +192,7 @@ public class LingodApplicationTests {
             //需要保存 xuhaoList 的数据 起始序号
             int xuhao = 10;
             //行
-            for (int rowIndex = 13; rowIndex < 43; rowIndex++) {
+            for (int rowIndex = 13; rowIndex < 37; rowIndex++) {
 //                System.out.println("==rowIndex==" + rowIndex);
                 Row row = sheet.getRow(rowIndex);
                 Cell cell = row.getCell(cellIndex);
@@ -266,22 +266,22 @@ public class LingodApplicationTests {
                     String[] ro = xuhaoList.split(",");
                     String re = ro[ro.length - 1];
                     //序号
-                    int r = Integer.parseInt(re) + 10;
+                    int r = xuhao;
                     fa.setXuhaolist(xuhaoList + "," + r);
                 }
-//                switch (rowIndex) {
-//                    case 14:
-//                        xuhao += 20;
-//                        break;
-//                    case 23:
-//                        xuhao += 60;
-//                        break;
-//                    default:
-//                        xuhao += 10;
-//                        break;
-//
-//                }
+                switch (rowIndex) {
+                    case 14:
+                        xuhao += 20;
+                        break;
+                    case 23:
+                        xuhao += 60;
+                        break;
+                    default:
+                        xuhao += 10;
+                        break;
 
+                }
+//                xuhao += 10;
             }
         }
         System.out.println("=====>" + new Gson().toJson(list));

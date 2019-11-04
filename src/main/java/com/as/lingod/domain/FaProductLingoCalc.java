@@ -57,10 +57,44 @@ public class FaProductLingoCalc implements Serializable {
     private String totalstdct;
     private String name;
     private Integer nameId;
+    /**
+     * 创建者
+     */
+    private Integer adminId;
+    private String customizeName;
 
     private String protype;
 
     private String totalpeo;
+    private Long createTime;
+
+    public Integer getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(Integer adminId) {
+        this.adminId = adminId;
+    }
+
+    public String getCustomizeName() {
+        return customizeName;
+    }
+
+    public void setCustomizeName(String customizeName) {
+        this.customizeName = customizeName;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
+    }
 
     public Integer getEdition() {
         return edition;
@@ -173,7 +207,6 @@ public class FaProductLingoCalc implements Serializable {
     }
 
 
-
     public String getTotalallowance() {
         return totalallowance;
     }
@@ -193,8 +226,11 @@ public class FaProductLingoCalc implements Serializable {
                 ", totalstdct='" + totalstdct + '\'' +
                 ", name='" + name + '\'' +
                 ", nameId=" + nameId +
+                ", adminId=" + adminId +
+                ", customizeName='" + customizeName + '\'' +
                 ", protype='" + protype + '\'' +
                 ", totalpeo='" + totalpeo + '\'' +
+                ", createTime=" + createTime +
                 '}';
     }
 }
