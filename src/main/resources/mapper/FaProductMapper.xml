@@ -7,7 +7,6 @@
         <id column="id" property="id" />
         <result column="name" property="name" />
         <result column="edition" property="edition" />
-        <result column="ctime" property="ctime" />
         <result column="cpeople" property="cpeople" />
         <result column="lname" property="lname" />
         <result column="lcode" property="lcode" />

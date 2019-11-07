@@ -32,7 +32,7 @@ public class FaProduct implements Serializable {
     /**
      * 建立日期
      */
-    private Date ctime;
+//    private Date ctime;
     /**
      * 建立者
      */
@@ -111,13 +111,13 @@ public class FaProduct implements Serializable {
         this.edition = edition;
     }
 
-    public Date getCtime() {
-        return ctime;
-    }
+//    public Date getCtime() {
+//        return ctime;
+//    }
 
-    public void setCtime(Date ctime) {
-        this.ctime = ctime;
-    }
+//    public void setCtime(Date ctime) {
+//        this.ctime = ctime;
+//    }
 
     public String getCpeople() {
         return cpeople;
@@ -229,7 +229,7 @@ public class FaProduct implements Serializable {
         "id=" + id +
         ", name=" + name +
         ", edition=" + edition +
-        ", ctime=" + ctime +
+//        ", ctime=" + ctime +
         ", cpeople=" + cpeople +
         ", lname=" + lname +
         ", lcode=" + lcode +
