@@ -58,9 +58,10 @@ public class FaProductLingoController {
         boolean r = faProductLingoCalcService.insertAllColumn(faCalc);
         //先设置calc id
         Integer calcId = faCalc.getId();
-        faLingoList.parallelStream().forEach(faProductLingo -> {
+        for (int i = 0, len = faLingoList.size(); i < len; i++) {
+            FaProductLingo faProductLingo = faLingoList.get(i);
             faProductLingo.setCalcId(calcId);
-        });
+        }
         boolean row = faProductLingoService.insertBatch(faLingoList);
         if (row && r) {
             return ResultJson.createBySuccess();
