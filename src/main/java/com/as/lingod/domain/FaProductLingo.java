@@ -75,6 +75,12 @@ public class FaProductLingo implements Serializable {
      */
     private Integer peocount;
 
+    /**
+     * 合并难度系数
+     */
+    private String merhard;
+
+
     public String getName() {
         return name;
     }
@@ -199,13 +205,20 @@ public class FaProductLingo implements Serializable {
         this.load = load;
     }
 
+    public String getMerhard() {
+        return merhard;
+    }
+
+    public void setMerhard(String merhard) {
+        this.merhard = merhard;
+    }
+
     @Override
     public String toString() {
         return "FaProductLingo{" +
                 "id=" + id +
                 ", edition='" + edition + '\'' +
                 ", calcId=" + calcId +
-//                ", ctime='" + ctime + '\'' +
                 ", name='" + name + '\'' +
                 ", nameId=" + nameId +
                 ", purect='" + purect + '\'' +
@@ -217,6 +230,7 @@ public class FaProductLingo implements Serializable {
                 ", xuhaolist='" + xuhaolist + '\'' +
                 ", usercount=" + usercount +
                 ", peocount=" + peocount +
+                ", merhard='" + merhard + '\'' +
                 '}';
     }
 }

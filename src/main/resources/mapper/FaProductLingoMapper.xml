@@ -18,6 +18,7 @@
         <result column="production" property="production"/>
         <result column="nameId" property="nameId"/>
         <result column="name" property="name"/>
+        <result column="merhard" property="merhard"/>
     </resultMap>
     <update id="updateCalc">
         UPDATE fa_product_lingo
