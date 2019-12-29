@@ -40,18 +40,16 @@ public class CodeGeneration {
         DataSourceConfig dsc = new DataSourceConfig();
         dsc.setDbType(DbType.MYSQL);
         dsc.setDriverName("com.mysql.jdbc.Driver");
-        dsc.setUsername("wmc");
-        dsc.setPassword("qq111111");
-        dsc.setUrl("jdbc:mysql://47.106.181.1:3306/fastadmin2");
+        dsc.setUsername("root");
+        dsc.setPassword("4AC995df9ab4");
+        dsc.setUrl("jdbc:mysql://39.108.103.128:3306/fastadmin2");
         mpg.setDataSource(dsc);
 
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
         // strategy.setTablePrefix(new String[] { "sys_" });// 此处可以修改为您的表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-        strategy.setInclude(new String[]{"fa_product",
-                "fa_product_lingo",
-                "fa_product_lingo_calc","fa_flow","fa_main"}); // 需要生成的表
+        strategy.setInclude(new String[]{"link_detail"}); // 需要生成的表
 
         strategy.setSuperServiceClass(null);
         strategy.setSuperServiceImplClass(null);

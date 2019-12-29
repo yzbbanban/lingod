@@ -1,0 +1,33 @@
+server:
+  port: 9089
+# 47.106.181.1
+spring:
+  application:
+      name: lingod
+  datasource:
+    url:  jdbc:mysql://127.0.0.1:3306/sms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&useUnicode=true&serverTimezone=UTC
+    username:  root
+    password:  111111
+    type: com.alibaba.druid.pool.DruidDataSource
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+swagger:
+  show: true
+
+
+# 配置mybatis-plus
+# 配置扫描xml
+mybatis-plus:
+    mapper-locations: classpath:mapper/*.xml
+    # 实体扫描，多个package用逗号或者分号分隔
+    type-aliases-package: com.as.lingod.domain
+    #逻辑删除配置
+    global-config:
+      #配置逻辑删除字段为1是删除
+      logic-delete-value: 1
+      #配置逻辑删除字段为0是未删除
+      logic-not-delete-value: 0
+
+
