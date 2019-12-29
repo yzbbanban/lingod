@@ -1,9 +1,8 @@
 package com.as.lingod.service.schedul;
 
-import com.as.lingod.domain.FaSataWork;
-import com.as.lingod.domain.FaSatatime;
-import com.as.lingod.domain.LinkPool;
-import com.as.lingod.domain.ProcessingPool;
+import java.util.Date;
+
+import com.as.lingod.domain.*;
 import com.as.lingod.service.*;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -17,6 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import javax.management.relation.RoleUnresolved;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -33,6 +33,9 @@ public class ProgressSchedul {
     private LinkPoolService linkPoolService;
 
     @Autowired
+    private LinkDetailService linkDetailService;
+
+    @Autowired
     private FaSataWorkService faSataWorkService;
 
 
@@ -40,7 +43,7 @@ public class ProgressSchedul {
      * 自动捞取数据操作
      * 10/30 2/20 * * * ?
      */
-    @Scheduled(cron = "10 * * * * ?")
+    @Scheduled(cron = "10/30 2/20 * * * ?")
     @Transactional(rollbackFor = Exception.class)
     public void startProcessing() {
         logger.info("startProcessing");
@@ -77,7 +80,6 @@ public class ProgressSchedul {
             String name = data.getKey();
             //获取上一条link数据
             LinkPool lastLink = linkPoolService.getLastLink(name);
-            //获取上一条数据
             if (lastLink == null) {
                 //没有记录数据，则上一笔数据为 0
                 lastLink.setDefectiveRate("0");
@@ -89,16 +91,79 @@ public class ProgressSchedul {
                 lastLink.setAreaTotal(0);
                 lastLink.setAreaFail(0);
             }
+            //获取上一条分组的频率数据
+            Integer linkId = lastLink.getId();
+            Map<String, Object> linkMap = new HashMap<>(1);
+            linkMap.put("link_id", linkId);
+            List<LinkDetail> lastLinkDetails = linkDetailService.selectByMap(linkMap);
+            //如果为空则赋值为空值
+            if (CollectionUtils.isEmpty(lastLinkDetails)) {
+                LinkDetail linkDetail = new LinkDetail();
+                linkDetail.setId(0);
+                linkDetail.setLinkId(0);
+                linkDetail.setAreaPass(0);
+                linkDetail.setAreaSPass(0);
+                linkDetail.setAreaEff(new BigDecimal("0"));
+                linkDetail.setCreateDate(lastLink.getCreateDate());
+                linkDetail.setPass(0);
+                linkDetail.setFail(0);
+                linkDetail.setGroup("");
+                lastLinkDetails.add(linkDetail);
+            }
 
             List<FaSataWork> ldata = data.getValue();
             Integer totalPass = 0;
             Integer totalFail = 0;
+            Integer totalPeo = 0;
+            BigDecimal totalGEff = BigDecimal.ZERO;
+            //用于保存的记录数据
+            List<LinkDetail> linkList = new ArrayList<>();
+
             //计算上面数据 相同线别的不同组别
             for (FaSataWork ldatum : ldata) {
+                //合并每组的好品和坏品数据
                 totalPass = totalPass + ldatum.getPass();
                 totalFail = totalFail + ldatum.getFail();
-                //累计
+                if (CollectionUtils.isEmpty(lastLinkDetails)) {
+                    //区间默认值都为 0
+                    logger.info("[无上一条数据记录]");
+                } else {
+                    for (LinkDetail laskLinkDetail : lastLinkDetails) {
+                        String group = laskLinkDetail.getGroup();
+                        //组别相同，计算，每个 list 中只有一个单独的组别，不会同时有多个相同组别进入
+                        if (group.equals(ldatum.getGroup())) {
+                            LinkDetail linkDetail = new LinkDetail();
+                            //算出每组的区间产量 当前-上一笔
+                            int lastPass = laskLinkDetail.getPass();
+                            //组区间好品数
+                            Integer areaPass = ldatum.getPass() - lastPass;
+                            //算出毫秒数
+                            long time = ldatum.getJtime().getTime() - laskLinkDetail.getCreateDate().getTime();
+                            //算出为小时数据
+                            String areaTime = "" + time / (1000 * 60 * 60);
+                            //TODO 计算标准产出 先不算
+                            Integer peo = 0;
+                            BigDecimal areaS = BigDecimal.ZERO.multiply(new BigDecimal("" + peo));
+                            //单个组别的效率： 区间产出量/区间标准产出(区间时(两时间段相减/24)*每小时产出)
+                            BigDecimal groupEff = new BigDecimal("" + areaPass)
+                                    .divide(areaS, BigDecimal.ROUND_HALF_UP, 4);
+                            // totalGEff = totalGEff.add(groupEff);
 
+                            linkDetail.setAreaPass(areaPass);
+                            linkDetail.setAreaSPass(areaS.intValue());
+                            linkDetail.setAreaEff(groupEff);
+                            linkDetail.setCreateDate(ldatum.getJtime());
+                            linkDetail.setPass(ldatum.getPass());
+                            linkDetail.setFail(ldatum.getFail());
+                            linkDetail.setGroup(ldatum.getGroup());
+                            linkDetail.setPeople(ldatum.getPeople());
+                            linkList.add(laskLinkDetail);
+                        }
+                    }
+                }
+                //若 mc 数据是对的，则直接相加
+                totalGEff = totalGEff.add(new BigDecimal(ldatum.getEfficiency()));
+                totalPeo = totalPeo + ldatum.getPeople();
             }
             //不同组别的时间相同：
             Date time = ldata.get(0).getJtime();
@@ -119,18 +184,25 @@ public class ProgressSchedul {
             linkPool.setAreaTotal(areaTotal);
             linkPool.setAreaFail(areaFail);
 
-            //单个组别的效率： 区间产出量/区间标准产出(区间时(两时间段相减/24)*每小时产出)
-            //团队效率：单个组别效率*是否结业*人力 ++ / 是否结业*人力 ++
             //如：((aa1-aa0)/as  +  (ba1-ba0)/bs)  / (ap+bp)
+            //团队效率：单个组别效率*是否结业*人力 ++ / 是否结业*人力 ++
 
-            linkPool.setTeamPerformance("");
+            linkPool.setTeamPerformance(
+                    totalGEff
+                            .divide(new BigDecimal("" + totalPeo)
+                                    , BigDecimal.ROUND_HALF_UP, 4)
+                            .stripTrailingZeros()
+                            .toPlainString());
             //添加数据
             poolList.add(linkPool);
+            boolean res = linkPoolService.saveLinkInfo(linkList, linkPool);
+            if (!res) {
+                throw new RuntimeException("error");
+            }
 
         }
 
 
     }
-
 
 }

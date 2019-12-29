@@ -1,15 +1,19 @@
 package com.as.lingod.domain;
 
 import com.baomidou.mybatisplus.enums.IdType;
+
 import java.math.BigDecimal;
 import java.util.Date;
+
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.io.Serializable;
 
 /**
  * <p>
- * 
+ * <p>
  * </p>
  *
  * @author ban123
@@ -22,6 +26,11 @@ public class LinkDetail implements Serializable {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+    /**
+     * link id
+     */
+    @TableField("link_id")
+    private Integer linkId;
     /**
      * 区间产量
      */
@@ -38,6 +47,23 @@ public class LinkDetail implements Serializable {
      * 时开始
      */
     private Date createDate;
+    /**
+     * 好品
+     */
+    private Integer pass;
+    /**
+     * 坏品
+     */
+    private Integer fail;
+    /**
+     * 组别
+     */
+    private String group;
+
+    /**
+     * 人数
+     */
+    private Integer people;
 
 
     public Integer getId() {
@@ -46,6 +72,14 @@ public class LinkDetail implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getLinkId() {
+        return linkId;
+    }
+
+    public void setLinkId(Integer linkId) {
+        this.linkId = linkId;
     }
 
     public Integer getAreaPass() {
@@ -80,14 +114,51 @@ public class LinkDetail implements Serializable {
         this.createDate = createDate;
     }
 
+    public Integer getPass() {
+        return pass;
+    }
+
+    public void setPass(Integer pass) {
+        this.pass = pass;
+    }
+
+    public Integer getFail() {
+        return fail;
+    }
+
+    public void setFail(Integer fail) {
+        this.fail = fail;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    public Integer getPeople() {
+        return people;
+    }
+
+    public void setPeople(Integer people) {
+        this.people = people;
+    }
+
     @Override
     public String toString() {
         return "LinkDetail{" +
-        "id=" + id +
-        ", areaPass=" + areaPass +
-        ", areaSPass=" + areaSPass +
-        ", areaEff=" + areaEff +
-        ", createDate=" + createDate +
-        "}";
+                "id=" + id +
+                ", linkId=" + linkId +
+                ", areaPass=" + areaPass +
+                ", areaSPass=" + areaSPass +
+                ", areaEff=" + areaEff +
+                ", createDate=" + createDate +
+                ", pass=" + pass +
+                ", fail=" + fail +
+                ", group='" + group + '\'' +
+                ", people=" + people +
+                '}';
     }
 }
