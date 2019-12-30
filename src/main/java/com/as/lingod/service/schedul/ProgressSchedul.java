@@ -7,6 +7,7 @@ import com.as.lingod.service.*;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +82,7 @@ public class ProgressSchedul {
             //获取上一条link数据
             LinkPool lastLink = linkPoolService.getLastLink(name);
             if (lastLink == null) {
+                lastLink = new LinkPool();
                 //没有记录数据，则上一笔数据为 0
                 lastLink.setDefectiveRate("0");
                 lastLink.setTeamPerformance("0");
@@ -195,10 +197,17 @@ public class ProgressSchedul {
                             .toPlainString());
             //添加数据
             poolList.add(linkPool);
-            boolean res = linkPoolService.saveLinkInfo(linkList, linkPool);
-            if (!res) {
-                throw new RuntimeException("error");
+            logger.info("[poolList][{}]", poolList);
+            try {
+                boolean res = linkPoolService.saveLinkInfo(linkList, linkPool);
+                if (!res) {
+                    logger.error("[数据未保存错误]");
+                    throw new RuntimeException("error");
+                }
+            } catch (Exception e) {
+                logger.error("[数据保存错误]" + ExceptionUtils.getStackTrace(e));
             }
+
 
         }
 
