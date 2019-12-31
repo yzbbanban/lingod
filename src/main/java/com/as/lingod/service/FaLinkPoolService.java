@@ -14,7 +14,7 @@ import java.util.List;
  * @author ban123
  * @since 2019-12-28
  */
-public interface LinkPoolService extends IService<FaLinkPool> {
+public interface FaLinkPoolService extends IService<FaLinkPool> {
 
     /**
      * 获取去线别上一条数据

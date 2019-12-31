@@ -1,9 +1,11 @@
 package com.as.lingod.service.schedul;
 
-import java.util.Date;
-
-import com.as.lingod.domain.*;
-import com.as.lingod.service.*;
+import com.as.lingod.domain.FaLinkDetail;
+import com.as.lingod.domain.FaLinkPool;
+import com.as.lingod.domain.FaSataWork;
+import com.as.lingod.service.FaLinkDetailService;
+import com.as.lingod.service.FaLinkPoolService;
+import com.as.lingod.service.FaSataWorkService;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.google.common.collect.Lists;
@@ -30,10 +32,10 @@ public class ProgressSchedul {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private LinkPoolService linkPoolService;
+    private FaLinkPoolService linkPoolService;
 
     @Autowired
-    private LinkDetailService linkDetailService;
+    private FaLinkDetailService linkDetailService;
 
     @Autowired
     private FaSataWorkService faSataWorkService;

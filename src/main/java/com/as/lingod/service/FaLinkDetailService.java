@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.service.IService;
  * @author ban123
  * @since 2019-12-29
  */
-public interface LinkDetailService extends IService<FaLinkDetail> {
+public interface FaLinkDetailService extends IService<FaLinkDetail> {
 
 }

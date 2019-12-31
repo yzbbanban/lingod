@@ -19,7 +19,7 @@ import java.io.Serializable;
  * @author ban123
  * @since 2019-12-29
  */
-@TableName("link_detail")
+@TableName("fa_link_detail")
 public class FaLinkDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;

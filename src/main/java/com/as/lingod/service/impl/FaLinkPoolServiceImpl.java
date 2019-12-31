@@ -3,8 +3,8 @@ package com.as.lingod.service.impl;
 import com.as.lingod.domain.FaLinkDetail;
 import com.as.lingod.domain.FaLinkPool;
 import com.as.lingod.dao.FaLinkPoolMapper;
-import com.as.lingod.service.LinkDetailService;
-import com.as.lingod.service.LinkPoolService;
+import com.as.lingod.service.FaLinkDetailService;
+import com.as.lingod.service.FaLinkPoolService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,12 +21,12 @@ import java.util.List;
  * @since 2019-12-28
  */
 @Service
-public class LinkPoolServiceImpl extends ServiceImpl<FaLinkPoolMapper, FaLinkPool> implements LinkPoolService {
+public class FaLinkPoolServiceImpl extends ServiceImpl<FaLinkPoolMapper, FaLinkPool> implements FaLinkPoolService {
 
     @Autowired
     private FaLinkPoolMapper linkPoolMapper;
     @Autowired
-    private LinkDetailService linkDetailService;
+    private FaLinkDetailService linkDetailService;
 
     /**
      * 获取去线别上一条数据
