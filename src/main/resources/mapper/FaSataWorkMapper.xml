@@ -4,19 +4,22 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.as.lingod.domain.FaSataWork">
-        <id column="id" property="id" />
-        <result column="wid" property="wid" />
-        <result column="ctime" property="ctime" />
-        <result column="status" property="status" />
-        <result column="jtime" property="jtime" />
-        <result column="pass" property="pass" />
-        <result column="fail" property="fail" />
-        <result column="device" property="device" />
-        <result column="group" property="group" />
-        <result column="xianbie" property="xianbie" />
-        <result column="out" property="out" />
-        <result column="efficiency" property="efficiency" />
-        <result column="people" property="people" />
+        <id column="id" property="id"/>
+        <result column="wid" property="wid"/>
+        <result column="ctime" property="ctime"/>
+        <result column="status" property="status"/>
+        <result column="jtime" property="jtime"/>
+        <result column="pass" property="pass"/>
+        <result column="fail" property="fail"/>
+        <result column="device" property="device"/>
+        <result column="group" property="group"/>
+        <result column="xianbie" property="xianbie"/>
+        <result column="out" property="out"/>
+        <result column="efficiency" property="efficiency"/>
+        <result column="people" property="people"/>
     </resultMap>
+    <select id="getDistinctCount" resultType="java.lang.Integer">
+        SELECT  count(1) FROM fa_sata_work GROUP BY xianbie,`group`
+    </select>
 
 </mapper>

@@ -9,6 +9,7 @@ import com.as.lingod.service.FaSataWorkService;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,9 @@ public class ProgressSchedul {
     @Autowired
     private FaSataWorkService faSataWorkService;
 
+    private final String J_TIME = "jtime";
+    private final String XIAN_BIE = "xianbie";
+
 
     /**
      * 自动捞取数据操作
@@ -48,22 +52,24 @@ public class ProgressSchedul {
     @Scheduled(cron = "0/30 * * * * ?")
     @Transactional(rollbackFor = Exception.class)
     public void startProcessing() {
+        Gson gson = new Gson();
         logger.info("startProcessing");
-        //获取没有处理的数据
+        //获取没有处理的数据  或许线别，获取相同时间
         Wrapper<FaSataWork> w = new EntityWrapper<>();
         Map<String, Object> map = new HashMap<>(2);
         map.put("`out`", false);
-        w.allEq(map).orderAsc(Lists.newArrayList("jtime"));
+        w.allEq(map).orderAsc(Lists.newArrayList(J_TIME, XIAN_BIE));
         List<FaSataWork> list = faSataWorkService.selectList(w);
         if (CollectionUtils.isEmpty(list)) {
             //目前无数据需要记录，未开线
             logger.error("[目前无数据需要记录，未开线]");
             return;
         }
+
         //获取相同线的数据合并
         //map 记录线别数据
         logger.info("[开始计算数据]");
-        Map<String, List<FaSataWork>> faMap = new HashMap<>();
+        Map<String, List<FaSataWork>> faMap = new HashMap<>(10);
         //先过滤出线别,讲相同线别的数据塞入
         for (FaSataWork faSataWork : list) {
             String name = faSataWork.getXianbie();
@@ -73,7 +79,40 @@ public class ProgressSchedul {
                 faMap.get(name).add(faSataWork);
             }
         }
+        //过滤出，每次只有多线，多组，但是每组只有一条的数据
+        Iterator<Map.Entry<String, List<FaSataWork>>> entry = faMap.entrySet().iterator();
+        // --map-> xianbie:list --list-> group:
+        Map<String, Map<String, List<FaSataWork>>> tempFaMap = new HashMap<>(10);
+        while (entry.hasNext()) {
+            Map.Entry<String, List<FaSataWork>> da = entry.next();
+            String tempXB = da.getKey();
+            List<FaSataWork> tempList = da.getValue();
+            //查分组别相同，时间不同的数据
+            Map<String, List<FaSataWork>> faSataWorkMap = new HashMap<>(10);
+            for (FaSataWork faSataWork : tempList) {
+                //相同组别的数据
+                String group = faSataWork.getGroup();
+                if (CollectionUtils.isEmpty(faSataWorkMap.get(group))) {
+                    faSataWorkMap.put(group, Lists.newArrayList(faSataWork));
+                } else {
+                    faSataWorkMap.get(group).add(faSataWork);
+                }
+            }
+            tempFaMap.put(tempXB, faSataWorkMap);
+        }
+        //结果为：线别（列表）：组别：具体数据（列表）
+        logger.info(gson.toJson(tempFaMap));
 
+//        saveData(faMap);
+
+    }
+
+    /**
+     * 保存数据
+     *
+     * @param faMap Map<String, List<FaSataWork>> faMap
+     */
+    private void saveData(Map<String, List<FaSataWork>> faMap) {
         //用于记录要存的数据
         List<FaLinkPool> poolList = new ArrayList<>();
         //遍历数据计算
@@ -100,20 +139,6 @@ public class ProgressSchedul {
             Map<String, Object> linkMap = new HashMap<>(1);
             linkMap.put("link_id", linkId);
             List<FaLinkDetail> lastLinkDetails = linkDetailService.selectByMap(linkMap);
-            //如果为空则赋值为空值
-            if (CollectionUtils.isEmpty(lastLinkDetails)) {
-                FaLinkDetail linkDetail = new FaLinkDetail();
-                linkDetail.setId(0);
-                linkDetail.setLinkId(0);
-                linkDetail.setAreaPass(0);
-                linkDetail.setAreaSPass(0);
-                linkDetail.setAreaEff(new BigDecimal("0"));
-                linkDetail.setCreateDate(lastLink.getCreateDate());
-                linkDetail.setPass(0);
-                linkDetail.setFail(0);
-                linkDetail.setGroup("");
-                lastLinkDetails.add(linkDetail);
-            }
 
             List<FaSataWork> ldata = data.getValue();
             Integer totalPass = 0;
@@ -128,14 +153,26 @@ public class ProgressSchedul {
                 //合并每组的好品和坏品数据
                 totalPass = totalPass + ldatum.getPass();
                 totalFail = totalFail + ldatum.getFail();
+                //如果为空则赋值为空值
                 if (CollectionUtils.isEmpty(lastLinkDetails)) {
                     //区间默认值都为 0
                     logger.info("[无上一条数据记录]");
+                    FaLinkDetail linkDetail = new FaLinkDetail();
+                    linkDetail.setAreaPass(0);
+                    linkDetail.setAreaSPass(0);
+                    linkDetail.setAreaEff(BigDecimal.ZERO);
+                    linkDetail.setCreateDate(ldatum.getJtime());
+                    linkDetail.setPass(ldatum.getPass());
+                    linkDetail.setFail(ldatum.getFail());
+                    linkDetail.setGroup(ldatum.getGroup());
+                    linkDetail.setPeople(ldatum.getPeople());
+                    linkList.add(linkDetail);
                 } else {
+                    //有上一条数据
                     for (FaLinkDetail laskLinkDetail : lastLinkDetails) {
-                        String group = laskLinkDetail.getGroup();
+                        String group = laskLinkDetail.getGroup().trim();
                         //组别相同，计算，每个 list 中只有一个单独的组别，不会同时有多个相同组别进入
-                        if (group.equals(ldatum.getGroup())) {
+                        if (group.equals(ldatum.getGroup().trim())) {
                             FaLinkDetail linkDetail = new FaLinkDetail();
                             //算出每组的区间产量 当前-上一笔
                             int lastPass = laskLinkDetail.getPass();
@@ -161,7 +198,7 @@ public class ProgressSchedul {
                             linkDetail.setFail(ldatum.getFail());
                             linkDetail.setGroup(ldatum.getGroup());
                             linkDetail.setPeople(ldatum.getPeople());
-                            linkList.add(laskLinkDetail);
+                            linkList.add(linkDetail);
                         }
                     }
                 }
@@ -224,8 +261,6 @@ public class ProgressSchedul {
 
 
         }
-
-
     }
 
 }
