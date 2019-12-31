@@ -8,7 +8,6 @@
         <result column="wid" property="wid" />
         <result column="ctime" property="ctime" />
         <result column="status" property="status" />
-        <result column="ftime" property="ftime" />
         <result column="jtime" property="jtime" />
         <result column="pass" property="pass" />
         <result column="fail" property="fail" />

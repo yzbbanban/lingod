@@ -48,10 +48,6 @@ public class FaSataWork implements Serializable {
     private Integer people;
 
     /**
-     * 结批时间
-     */
-    private Date ftime;
-    /**
      * 计数器数据进来的时间
      */
     private Date jtime;
@@ -130,13 +126,6 @@ public class FaSataWork implements Serializable {
         this.status = status;
     }
 
-    public Date getFtime() {
-        return ftime;
-    }
-
-    public void setFtime(Date ftime) {
-        this.ftime = ftime;
-    }
 
     public Date getJtime() {
         return jtime;
@@ -203,7 +192,6 @@ public class FaSataWork implements Serializable {
                 ", status=" + status +
                 ", efficiency='" + efficiency + '\'' +
                 ", people=" + people +
-                ", ftime=" + ftime +
                 ", jtime=" + jtime +
                 ", pass=" + pass +
                 ", fail=" + fail +
