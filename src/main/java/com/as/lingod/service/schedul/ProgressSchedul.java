@@ -66,10 +66,9 @@ public class ProgressSchedul {
             return;
         }
 
-
         logger.info("[开始计算数据]");
         //相同时间合并
-        Map<Long, List<FaSataWork>> faDateMap = new HashMap<>(10);
+        Map<Long, List<FaSataWork>> faDateMap = new LinkedHashMap<>(10);
         //先过滤出线别,讲相同线别的数据塞入
         for (FaSataWork faSataWork : list) {
             Date date = faSataWork.getJtime();
@@ -80,12 +79,16 @@ public class ProgressSchedul {
                 faDateMap.get(time).add(faSataWork);
             }
         }
+        logger.info("[选出时间相同数据]{}", gson.toJson(faDateMap));
+
 
         //遍历map 时间相同的分成数组，时间相同的数据按照xianbie-list合并
         Iterator<Map.Entry<Long, List<FaSataWork>>> longEntry = faDateMap.entrySet().iterator();
+        List<Map<String, List<FaSataWork>>> mapList = new ArrayList<>();
         while (longEntry.hasNext()) {
             Map.Entry<Long, List<FaSataWork>> longDa = longEntry.next();
             List<FaSataWork> tempLongList = longDa.getValue();
+            logger.info("[获取时间相同数据]{}:{}", longDa, gson.toJson(tempLongList));
             //获取相同线的数据合并
             //map 记录线别数据
             Map<String, List<FaSataWork>> faMap = new HashMap<>(10);
@@ -98,60 +101,10 @@ public class ProgressSchedul {
                     faMap.get(name).add(faSataWork);
                 }
             }
-
-            //分离数据
-            Iterator<Map.Entry<String, List<FaSataWork>>> entry = faMap.entrySet().iterator();
-            // --map-> xianbie:list --list-> group:
-            Map<String, Map<String, List<FaSataWork>>> tempFaMap = new HashMap<>(10);
-            while (entry.hasNext()) {
-                Map.Entry<String, List<FaSataWork>> da = entry.next();
-                String tempXB = da.getKey();
-                List<FaSataWork> tempList = da.getValue();
-                //查分组别相同，时间不同的数据
-                Map<String, List<FaSataWork>> faSataWorkMap = new HashMap<>(10);
-                for (FaSataWork faSataWork : tempList) {
-                    //相同组别的数据
-                    String group = faSataWork.getGroup();
-                    if (CollectionUtils.isEmpty(faSataWorkMap.get(group))) {
-                        faSataWorkMap.put(group, Lists.newArrayList(faSataWork));
-                    } else {
-                        faSataWorkMap.get(group).add(faSataWork);
-                    }
-                }
-                tempFaMap.put(tempXB, faSataWorkMap);
-            }
-            //结果为：线别（列表）：组别：具体数据（列表）
-            logger.info(gson.toJson(tempFaMap));
-            //过滤出，每次只有多线，多组，但是每组只有一条的数据
-            List<Map<String, List<FaSataWork>>> mapList = new ArrayList<>(10);
-
-            Iterator<Map.Entry<String, Map<String, List<FaSataWork>>>> tempEntry = tempFaMap.entrySet().iterator();
-            //组装结果：线别相同且时间相同的数据放到一个map里，不同的分到list中
-            while (tempEntry.hasNext()) {
-                Map.Entry<String, Map<String, List<FaSataWork>>> da = tempEntry.next();
-                String xb = da.getKey();
-                Map<String, List<FaSataWork>> tempMap = da.getValue();
-                Iterator<Map.Entry<String, List<FaSataWork>>> tempMapEntry = tempMap.entrySet().iterator();
-                //添加数据
-                while (tempMapEntry.hasNext()) {
-                    Map.Entry<String, List<FaSataWork>> tempDa = tempMapEntry.next();
-                    String group = tempDa.getKey();
-                    List<FaSataWork> faSataWorks = tempDa.getValue();
-                    //相同xianbie的数据
-                    for (FaSataWork faSataWork : faSataWorks) {
-                        //时间相同，则放到一个数据里，不同则添加list
-                        Map<String, List<FaSataWork>> faListMap = new HashMap<>(1);
-                        faListMap.put(xb, Lists.newArrayList(faSataWork));
-                        mapList.add(faListMap);
-                    }
-                }
-
-            }
+            mapList.add(faMap);
         }
 
-        //组装为list后的数据 xianbie
-        // :list
-//        logger.info("[组装为list后的数据]{}", gson.toJson(mapList));
+        logger.info("[组装为list后的数据]{}", gson.toJson(mapList));
 
 
 //        saveData(faMap);
