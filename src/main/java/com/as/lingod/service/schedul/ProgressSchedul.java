@@ -166,6 +166,17 @@ public class ProgressSchedul {
                 //若 mc 数据是对的，则直接相加
                 totalGEff = totalGEff.add(new BigDecimal(ldatum.getEfficiency()));
                 totalPeo = totalPeo + ldatum.getPeople();
+                //更新状态为已处理
+                FaSataWork t = new FaSataWork();
+                t.setOut(true);
+                Wrapper<FaSataWork> ww = new EntityWrapper<>();
+                Map<String, Object> faSataWorkMap = new HashMap<>(1);
+                faSataWorkMap.put("id", ldatum.getId());
+                ww.allEq(map);
+                if (!faSataWorkService.update(t, ww)) {
+                    logger.error("[更新记录为已记录失败][{}]", ldatum);
+                    throw new RuntimeException("[更新记录为已记录失败]");
+                }
             }
             //不同组别的时间相同：
             Date time = ldata.get(0).getJtime();
