@@ -174,7 +174,8 @@ public class ProgressSchedul {
                 Wrapper<FaSataWork> ww = new EntityWrapper<>();
                 Map<String, Object> faSataWorkMap = new HashMap<>(1);
                 faSataWorkMap.put("id", ldatum.getId());
-                ww.allEq(map);
+                faSataWorkMap.put("`out`", 0);
+                ww.allEq(faSataWorkMap);
                 if (!faSataWorkService.update(t, ww)) {
                     logger.error("[更新记录为已记录失败][{}]", ldatum);
                     throw new RuntimeException("[更新记录为已记录失败]");
