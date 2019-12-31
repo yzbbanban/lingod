@@ -13,9 +13,9 @@ import java.io.Serializable;
  * </p>
  *
  * @author ban123
- * @since 2019-12-29
+ * @since 2019-12-31
  */
-@TableName("link_pool")
+@TableName("fa_link_pool")
 public class FaLinkPool implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -62,6 +62,10 @@ public class FaLinkPool implements Serializable {
      * 区间坏品
      */
     private Integer areaFail;
+    /**
+     * 分组数据
+     */
+    private String groupJson;
 
 
     public Integer getId() {
@@ -152,6 +156,14 @@ public class FaLinkPool implements Serializable {
         this.areaFail = areaFail;
     }
 
+    public String getGroupJson() {
+        return groupJson;
+    }
+
+    public void setGroupJson(String groupJson) {
+        this.groupJson = groupJson;
+    }
+
     @Override
     public String toString() {
         return "FaLinkPool{" +
@@ -166,6 +178,7 @@ public class FaLinkPool implements Serializable {
         ", total=" + total +
         ", areaTotal=" + areaTotal +
         ", areaFail=" + areaFail +
+        ", groupJson=" + groupJson +
         "}";
     }
 }

@@ -43,7 +43,7 @@ public class ProgressSchedul {
      * 自动捞取数据操作
      * 10/30 2/20 * * * ?
      */
-    @Scheduled(cron = "10 * * * * ?")
+    @Scheduled(cron = "0/30 * * * * ?")
     @Transactional(rollbackFor = Exception.class)
     public void startProcessing() {
         logger.info("startProcessing");
@@ -51,15 +51,16 @@ public class ProgressSchedul {
         Wrapper<FaSataWork> w = new EntityWrapper<>();
         Map<String, Object> map = new HashMap<>(2);
         map.put("`out`", false);
-        w.allEq(map).orderAsc(Lists.newArrayList("jtime", "xianbie"));
+        w.allEq(map).orderAsc(Lists.newArrayList("jtime"));
         List<FaSataWork> list = faSataWorkService.selectList(w);
         if (CollectionUtils.isEmpty(list)) {
             //目前无数据需要记录，未开线
-            logger.info("[目前无数据需要记录，未开线]");
+            logger.error("[目前无数据需要记录，未开线]");
             return;
         }
         //获取相同线的数据合并
         //map 记录线别数据
+        logger.info("[开始计算数据]");
         Map<String, List<FaSataWork>> faMap = new HashMap<>();
         //先过滤出线别,讲相同线别的数据塞入
         for (FaSataWork faSataWork : list) {
@@ -207,7 +208,7 @@ public class ProgressSchedul {
                             .toPlainString());
             //添加数据
             poolList.add(linkPool);
-            logger.info("[poolList][{}]", poolList);
+            logger.info("[计算完成结果poolList][{}]", poolList);
             try {
                 boolean res = linkPoolService.saveLinkInfo(linkList, linkPool);
                 if (!res) {

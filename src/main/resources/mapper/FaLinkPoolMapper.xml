@@ -9,7 +9,15 @@
         <result column="team_performance" property="teamPerformance" />
         <result column="createDate" property="createDate" />
         <result column="link_id" property="linkId" />
+        <result column="xianbie" property="xianbie" />
+        <result column="totalPass" property="totalPass" />
+        <result column="totalFail" property="totalFail" />
+        <result column="total" property="total" />
+        <result column="areaTotal" property="areaTotal" />
+        <result column="areaFail" property="areaFail" />
+        <result column="groupJson" property="groupJson" />
     </resultMap>
+
     <select id="getLastLink" resultType="com.as.lingod.domain.FaLinkPool">
         SELECT * FROM link_pool
         WHERE xianbie=#{name}
