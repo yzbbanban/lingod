@@ -1,6 +1,6 @@
 package com.as.lingod.dao;
 
-import com.as.lingod.domain.LinkPool;
+import com.as.lingod.domain.FaLinkPool;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -11,7 +11,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @author ban123
  * @since 2019-12-28
  */
-public interface LinkPoolMapper extends BaseMapper<LinkPool> {
+public interface FaLinkPoolMapper extends BaseMapper<FaLinkPool> {
 
     /**
      * 获取上一条数据
@@ -19,5 +19,5 @@ public interface LinkPoolMapper extends BaseMapper<LinkPool> {
      * @param name 线别名
      * @return re
      */
-    LinkPool getLastLink(String name);
+    FaLinkPool getLastLink(String name);
 }

@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @since 2019-12-29
  */
 @TableName("link_pool")
-public class LinkPool implements Serializable {
+public class FaLinkPool implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -154,7 +154,7 @@ public class LinkPool implements Serializable {
 
     @Override
     public String toString() {
-        return "LinkPool{" +
+        return "FaLinkPool{" +
         "id=" + id +
         ", defectiveRate=" + defectiveRate +
         ", teamPerformance=" + teamPerformance +

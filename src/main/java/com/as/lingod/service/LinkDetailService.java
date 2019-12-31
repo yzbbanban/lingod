@@ -1,6 +1,6 @@
 package com.as.lingod.service;
 
-import com.as.lingod.domain.LinkDetail;
+import com.as.lingod.domain.FaLinkDetail;
 import com.baomidou.mybatisplus.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.service.IService;
  * @author ban123
  * @since 2019-12-29
  */
-public interface LinkDetailService extends IService<LinkDetail> {
+public interface LinkDetailService extends IService<FaLinkDetail> {
 
 }

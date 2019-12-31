@@ -1,8 +1,8 @@
 package com.as.lingod.service.impl;
 
-import com.as.lingod.domain.LinkDetail;
-import com.as.lingod.domain.LinkPool;
-import com.as.lingod.dao.LinkPoolMapper;
+import com.as.lingod.domain.FaLinkDetail;
+import com.as.lingod.domain.FaLinkPool;
+import com.as.lingod.dao.FaLinkPoolMapper;
 import com.as.lingod.service.LinkDetailService;
 import com.as.lingod.service.LinkPoolService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -21,10 +21,10 @@ import java.util.List;
  * @since 2019-12-28
  */
 @Service
-public class LinkPoolServiceImpl extends ServiceImpl<LinkPoolMapper, LinkPool> implements LinkPoolService {
+public class LinkPoolServiceImpl extends ServiceImpl<FaLinkPoolMapper, FaLinkPool> implements LinkPoolService {
 
     @Autowired
-    private LinkPoolMapper linkPoolMapper;
+    private FaLinkPoolMapper linkPoolMapper;
     @Autowired
     private LinkDetailService linkDetailService;
 
@@ -35,7 +35,7 @@ public class LinkPoolServiceImpl extends ServiceImpl<LinkPoolMapper, LinkPool> i
      * @return r
      */
     @Override
-    public LinkPool getLastLink(String name) {
+    public FaLinkPool getLastLink(String name) {
         return linkPoolMapper.getLastLink(name);
     }
 
@@ -48,14 +48,14 @@ public class LinkPoolServiceImpl extends ServiceImpl<LinkPoolMapper, LinkPool> i
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean saveLinkInfo(List<LinkDetail> linkList, LinkPool linkPool) {
+    public boolean saveLinkInfo(List<FaLinkDetail> linkList, FaLinkPool linkPool) {
         //保存数据
         int row = linkPoolMapper.insert(linkPool);
         if (row <= 0) {
             throw new RuntimeException("error");
         }
         int id = linkPool.getId();
-        for (LinkDetail linkDetail : linkList) {
+        for (FaLinkDetail linkDetail : linkList) {
             linkDetail.setLinkId(id);
         }
         boolean res = linkDetailService.insertBatch(linkList);

@@ -1,6 +1,6 @@
 package com.as.lingod.dao;
 
-import com.as.lingod.domain.ProcessingPool;
+import com.as.lingod.domain.FaLinkDetail;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * </p>
  *
  * @author ban123
- * @since 2019-12-28
+ * @since 2019-12-29
  */
-public interface ProcessingPoolMapper extends BaseMapper<ProcessingPool> {
+public interface FaLinkDetailMapper extends BaseMapper<FaLinkDetail> {
 
 }

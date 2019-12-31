@@ -1,7 +1,7 @@
 package com.as.lingod.service;
 
-import com.as.lingod.domain.LinkDetail;
-import com.as.lingod.domain.LinkPool;
+import com.as.lingod.domain.FaLinkDetail;
+import com.as.lingod.domain.FaLinkPool;
 import com.baomidou.mybatisplus.service.IService;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  * @author ban123
  * @since 2019-12-28
  */
-public interface LinkPoolService extends IService<LinkPool> {
+public interface LinkPoolService extends IService<FaLinkPool> {
 
     /**
      * 获取去线别上一条数据
@@ -22,7 +22,7 @@ public interface LinkPoolService extends IService<LinkPool> {
      * @param name n
      * @return r
      */
-    LinkPool getLastLink(String name);
+    FaLinkPool getLastLink(String name);
 
     /**
      * 保存数据
@@ -31,5 +31,5 @@ public interface LinkPoolService extends IService<LinkPool> {
      * @param linkPool l
      * @return r
      */
-    boolean saveLinkInfo(List<LinkDetail> linkList, LinkPool linkPool);
+    boolean saveLinkInfo(List<FaLinkDetail> linkList, FaLinkPool linkPool);
 }

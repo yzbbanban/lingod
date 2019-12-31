@@ -1,7 +1,7 @@
 package com.as.lingod.service.impl;
 
-import com.as.lingod.domain.LinkDetail;
-import com.as.lingod.dao.LinkDetailMapper;
+import com.as.lingod.domain.FaLinkDetail;
+import com.as.lingod.dao.FaLinkDetailMapper;
 import com.as.lingod.service.LinkDetailService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2019-12-29
  */
 @Service
-public class LinkDetailServiceImpl extends ServiceImpl<LinkDetailMapper, LinkDetail> implements LinkDetailService {
+public class LinkDetailServiceImpl extends ServiceImpl<FaLinkDetailMapper, FaLinkDetail> implements LinkDetailService {
 
 }

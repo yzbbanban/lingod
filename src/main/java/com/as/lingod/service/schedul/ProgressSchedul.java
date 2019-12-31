@@ -17,7 +17,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import javax.management.relation.RoleUnresolved;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -73,16 +72,16 @@ public class ProgressSchedul {
         }
 
         //用于记录要存的数据
-        List<LinkPool> poolList = new ArrayList<>();
+        List<FaLinkPool> poolList = new ArrayList<>();
         //遍历数据计算
         Iterator<Map.Entry<String, List<FaSataWork>>> entry = faMap.entrySet().iterator();
         while (entry.hasNext()) {
             Map.Entry<String, List<FaSataWork>> data = entry.next();
             String name = data.getKey();
             //获取上一条link数据
-            LinkPool lastLink = linkPoolService.getLastLink(name);
+            FaLinkPool lastLink = linkPoolService.getLastLink(name);
             if (lastLink == null) {
-                lastLink = new LinkPool();
+                lastLink = new FaLinkPool();
                 //没有记录数据，则上一笔数据为 0
                 lastLink.setDefectiveRate("0");
                 lastLink.setTeamPerformance("0");
@@ -97,10 +96,10 @@ public class ProgressSchedul {
             Integer linkId = lastLink.getId();
             Map<String, Object> linkMap = new HashMap<>(1);
             linkMap.put("link_id", linkId);
-            List<LinkDetail> lastLinkDetails = linkDetailService.selectByMap(linkMap);
+            List<FaLinkDetail> lastLinkDetails = linkDetailService.selectByMap(linkMap);
             //如果为空则赋值为空值
             if (CollectionUtils.isEmpty(lastLinkDetails)) {
-                LinkDetail linkDetail = new LinkDetail();
+                FaLinkDetail linkDetail = new FaLinkDetail();
                 linkDetail.setId(0);
                 linkDetail.setLinkId(0);
                 linkDetail.setAreaPass(0);
@@ -119,7 +118,7 @@ public class ProgressSchedul {
             Integer totalPeo = 0;
             BigDecimal totalGEff = BigDecimal.ZERO;
             //用于保存的记录数据
-            List<LinkDetail> linkList = new ArrayList<>();
+            List<FaLinkDetail> linkList = new ArrayList<>();
 
             //计算上面数据 相同线别的不同组别
             for (FaSataWork ldatum : ldata) {
@@ -130,11 +129,11 @@ public class ProgressSchedul {
                     //区间默认值都为 0
                     logger.info("[无上一条数据记录]");
                 } else {
-                    for (LinkDetail laskLinkDetail : lastLinkDetails) {
+                    for (FaLinkDetail laskLinkDetail : lastLinkDetails) {
                         String group = laskLinkDetail.getGroup();
                         //组别相同，计算，每个 list 中只有一个单独的组别，不会同时有多个相同组别进入
                         if (group.equals(ldatum.getGroup())) {
-                            LinkDetail linkDetail = new LinkDetail();
+                            FaLinkDetail linkDetail = new FaLinkDetail();
                             //算出每组的区间产量 当前-上一笔
                             int lastPass = laskLinkDetail.getPass();
                             //组区间好品数
@@ -187,7 +186,7 @@ public class ProgressSchedul {
             //不良率
             BigDecimal defectiveRate = new BigDecimal("" + areaFail)
                     .divide(new BigDecimal("" + areaTotal), BigDecimal.ROUND_HALF_UP, 4);
-            LinkPool linkPool = new LinkPool();
+            FaLinkPool linkPool = new FaLinkPool();
             linkPool.setDefectiveRate(defectiveRate.stripTrailingZeros().toPlainString());
             linkPool.setCreateDate(time);
             linkPool.setXianbie(name);

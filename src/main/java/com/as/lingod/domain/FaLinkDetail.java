@@ -20,7 +20,7 @@ import java.io.Serializable;
  * @since 2019-12-29
  */
 @TableName("link_detail")
-public class LinkDetail implements Serializable {
+public class FaLinkDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -148,7 +148,7 @@ public class LinkDetail implements Serializable {
 
     @Override
     public String toString() {
-        return "LinkDetail{" +
+        return "FaLinkDetail{" +
                 "id=" + id +
                 ", linkId=" + linkId +
                 ", areaPass=" + areaPass +
