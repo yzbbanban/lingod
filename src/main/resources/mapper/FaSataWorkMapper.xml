@@ -3,19 +3,21 @@
 <mapper namespace="com.as.lingod.dao.FaSataWorkMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.as.lingod.domain.FaLinkPool">
+    <resultMap id="BaseResultMap" type="com.as.lingod.domain.FaSataWork">
         <id column="id" property="id" />
-        <result column="defective_rate" property="defectiveRate" />
-        <result column="team_performance" property="teamPerformance" />
-        <result column="createDate" property="createDate" />
-        <result column="link_id" property="linkId" />
+        <result column="wid" property="wid" />
+        <result column="ctime" property="ctime" />
+        <result column="status" property="status" />
+        <result column="ftime" property="ftime" />
+        <result column="jtime" property="jtime" />
+        <result column="pass" property="pass" />
+        <result column="fail" property="fail" />
+        <result column="device" property="device" />
+        <result column="group" property="group" />
         <result column="xianbie" property="xianbie" />
-        <result column="totalPass" property="totalPass" />
-        <result column="totalFail" property="totalFail" />
-        <result column="total" property="total" />
-        <result column="areaTotal" property="areaTotal" />
-        <result column="areaFail" property="areaFail" />
-        <result column="groupJson" property="groupJson" />
+        <result column="out" property="out" />
+        <result column="efficiency" property="efficiency" />
+        <result column="people" property="people" />
     </resultMap>
 
 </mapper>
