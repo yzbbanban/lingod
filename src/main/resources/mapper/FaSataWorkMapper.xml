@@ -12,7 +12,7 @@
         <result column="jtime" property="jtime" />
         <result column="pass" property="pass" />
         <result column="fail" property="fail" />
-        <result column="deiver" property="deiver" />
+        <result column="device" property="device" />
         <result column="group" property="group" />
         <result column="xianbie" property="xianbie" />
     </resultMap>

@@ -66,7 +66,7 @@ public class FaSataWork implements Serializable {
     /**
      * 设备号
      */
-    private String deiver;
+    private String device;
     /**
      * 分组
      */
@@ -162,12 +162,12 @@ public class FaSataWork implements Serializable {
         this.fail = fail;
     }
 
-    public String getDeiver() {
-        return deiver;
+    public String getDevice() {
+        return device;
     }
 
-    public void setDeiver(String deiver) {
-        this.deiver = deiver;
+    public void setDevice(String device) {
+        this.device = device;
     }
 
     public String getGroup() {
@@ -207,7 +207,7 @@ public class FaSataWork implements Serializable {
                 ", jtime=" + jtime +
                 ", pass=" + pass +
                 ", fail=" + fail +
-                ", deiver='" + deiver + '\'' +
+                ", device='" + device + '\'' +
                 ", group='" + group + '\'' +
                 ", xianbie='" + xianbie + '\'' +
                 ", out=" + out +
