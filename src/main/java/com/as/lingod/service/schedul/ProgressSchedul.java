@@ -44,14 +44,14 @@ public class ProgressSchedul {
      * 自动捞取数据操作
      * 10/30 2/20 * * * ?
      */
-    @Scheduled(cron = "10/30 2/20 * * * ?")
+    @Scheduled(cron = "10 * * * * ?")
     @Transactional(rollbackFor = Exception.class)
     public void startProcessing() {
         logger.info("startProcessing");
         //获取没有处理的数据
         Wrapper<FaSataWork> w = new EntityWrapper<>();
         Map<String, Object> map = new HashMap<>(2);
-        map.put("out", "0");
+        map.put("`out`", false);
         w.allEq(map).orderAsc(Lists.newArrayList("jtime", "xianbie"));
         List<FaSataWork> list = faSataWorkService.selectList(w);
         if (CollectionUtils.isEmpty(list)) {
