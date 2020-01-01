@@ -50,7 +50,6 @@ public class ProgressSchedul {
      * 10/30 2/20 * * * ?
      */
     @Scheduled(cron = "0/30 * * * * ?")
-    @Transactional(rollbackFor = Exception.class)
     public void startProcessing() {
         Gson gson = new Gson();
         logger.info("startProcessing");
@@ -106,8 +105,9 @@ public class ProgressSchedul {
 
         logger.info("[组装为list后的数据]{}", gson.toJson(mapList));
 
-
-//        saveData(faMap);
+        for (Map<String, List<FaSataWork>> stringListMap : mapList) {
+            saveData(stringListMap);
+        }
 
     }
 
@@ -186,17 +186,17 @@ public class ProgressSchedul {
                             long time = ldatum.getJtime().getTime() - laskLinkDetail.getCreateDate().getTime();
                             //算出为小时数据
                             String areaTime = "" + time / (1000 * 60 * 60);
-                            //TODO 计算标准产出 先不算
-                            Integer peo = 0;
+                            // 计算标准产出 先不算
+                            Integer peo = ldatum.getPeople();
                             BigDecimal areaS = BigDecimal.ZERO.multiply(new BigDecimal("" + peo));
                             //单个组别的效率： 区间产出量/区间标准产出(区间时(两时间段相减/24)*每小时产出)
-                            BigDecimal groupEff = new BigDecimal("" + areaPass)
-                                    .divide(areaS, BigDecimal.ROUND_HALF_UP, 4);
+//                            BigDecimal groupEff = new BigDecimal("" + areaPass)
+//                                    .divide(areaS, BigDecimal.ROUND_HALF_UP, 4);
                             // totalGEff = totalGEff.add(groupEff);
 
                             linkDetail.setAreaPass(areaPass);
                             linkDetail.setAreaSPass(areaS.intValue());
-                            linkDetail.setAreaEff(groupEff);
+                            linkDetail.setAreaEff(new BigDecimal(ldatum.getEfficiency()));
                             linkDetail.setCreateDate(ldatum.getJtime());
                             linkDetail.setPass(ldatum.getPass());
                             linkDetail.setFail(ldatum.getFail());
