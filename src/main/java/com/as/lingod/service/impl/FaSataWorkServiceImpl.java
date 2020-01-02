@@ -93,8 +93,8 @@ public class FaSataWorkServiceImpl extends ServiceImpl<FaSataWorkMapper, FaSataW
             List<FaLinkDetail> lastLinkDetails = linkDetailService.selectByMap(linkMap);
 
             List<FaSataWork> ldata = data.getValue();
-            Integer totalPass = 0;
-            Integer totalFail = 0;
+            Integer totalPass = lastLink.getTotalPass();
+            Integer totalFail = lastLink.getTotalFail();
             Integer totalPeo = 0;
             BigDecimal totalGEff = BigDecimal.ZERO;
             //用于保存的记录数据
@@ -109,23 +109,14 @@ public class FaSataWorkServiceImpl extends ServiceImpl<FaSataWorkMapper, FaSataW
                 if (CollectionUtils.isEmpty(lastLinkDetails)) {
                     //区间默认值都为 0
                     logger.info("[无上一条数据记录]");
-                    FaLinkDetail linkDetail = new FaLinkDetail();
-                    linkDetail.setAreaPass(0);
-                    linkDetail.setAreaSPass(0);
-                    linkDetail.setAreaEff(BigDecimal.ZERO);
-                    linkDetail.setCreateDate(ldatum.getJtime());
-                    linkDetail.setPass(ldatum.getPass());
-                    linkDetail.setFail(ldatum.getFail());
-                    linkDetail.setGroup(ldatum.getGroup());
-                    linkDetail.setPeople(ldatum.getPeople());
-                    linkList.add(linkDetail);
+                    setDefaultDetail(linkList, ldatum);
                 } else {
                     //有上一条数据
+                    FaLinkDetail linkDetail = new FaLinkDetail();
                     for (FaLinkDetail laskLinkDetail : lastLinkDetails) {
                         String group = laskLinkDetail.getGroup().trim();
                         //组别相同，计算，每个 list 中只有一个单独的组别，不会同时有多个相同组别进入
                         if (group.equals(ldatum.getGroup().trim())) {
-                            FaLinkDetail linkDetail = new FaLinkDetail();
                             //算出每组的区间产量 当前-上一笔
                             int lastPass = laskLinkDetail.getPass();
                             //组区间好品数
@@ -152,6 +143,9 @@ public class FaSataWorkServiceImpl extends ServiceImpl<FaSataWorkMapper, FaSataW
                             linkList.add(linkDetail);
                         }
                     }
+                    if (linkDetail.getAreaSPass() == null) {
+                        setDefaultDetail(linkList, ldatum);
+                    }
                 }
                 //若 mc 数据是对的，则直接相加
                 totalGEff = totalGEff.add(new BigDecimal(ldatum.getEfficiency()));
@@ -168,6 +162,7 @@ public class FaSataWorkServiceImpl extends ServiceImpl<FaSataWorkMapper, FaSataW
                     logger.error("[更新记录为已记录失败][{}]", ldatum);
                     throw new RuntimeException("[更新记录为已记录失败]");
                 }
+                logger.info("[detail]{}", linkList);
             }
             //不同组别的时间相同：
             Date time = ldata.get(0).getJtime();
@@ -199,7 +194,7 @@ public class FaSataWorkServiceImpl extends ServiceImpl<FaSataWorkMapper, FaSataW
                             .toPlainString());
             //添加数据
             poolList.add(linkPool);
-            logger.info("[计算完成结果poolList][{}]", poolList);
+            logger.info("[计算完成结果poolList]{}", poolList);
             try {
                 boolean res = faLinkPoolService.saveLinkInfo(linkList, linkPool);
                 if (!res) {
@@ -212,5 +207,24 @@ public class FaSataWorkServiceImpl extends ServiceImpl<FaSataWorkMapper, FaSataW
 
 
         }
+    }
+
+    /**
+     * 设置默认值
+     *
+     * @param linkList ll
+     * @param ldatum   ld
+     */
+    private void setDefaultDetail(List<FaLinkDetail> linkList, FaSataWork ldatum) {
+        FaLinkDetail linkDetail = new FaLinkDetail();
+        linkDetail.setAreaPass(0);
+        linkDetail.setAreaSPass(0);
+        linkDetail.setAreaEff(BigDecimal.ZERO);
+        linkDetail.setCreateDate(ldatum.getJtime());
+        linkDetail.setPass(ldatum.getPass());
+        linkDetail.setFail(ldatum.getFail());
+        linkDetail.setGroup(ldatum.getGroup());
+        linkDetail.setPeople(ldatum.getPeople());
+        linkList.add(linkDetail);
     }
 }
