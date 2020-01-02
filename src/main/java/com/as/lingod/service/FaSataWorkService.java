@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -23,5 +24,10 @@ public interface FaSataWorkService extends IService<FaSataWork> {
      */
     List<Integer> getDistinctCount();
 
-    List<FaSataWork> selectEarlyList();
+    /**
+     * s
+     *
+     * @param faMap f
+     */
+    void saveData(Map<String, List<FaSataWork>> faMap);
 }
