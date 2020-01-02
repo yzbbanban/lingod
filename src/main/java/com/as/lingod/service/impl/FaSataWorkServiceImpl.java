@@ -171,8 +171,11 @@ public class FaSataWorkServiceImpl extends ServiceImpl<FaSataWorkMapper, FaSataW
             Integer areaTotal = total - lastLink.getTotal();
             Integer areaFail = totalFail - lastLink.getTotalFail();
             //不良率
-            BigDecimal defectiveRate = new BigDecimal("" + areaFail)
-                    .divide(new BigDecimal("" + areaTotal), BigDecimal.ROUND_HALF_UP, 4);
+            BigDecimal defectiveRate = BigDecimal.ZERO;
+            if (areaFail != 0) {
+                defectiveRate = new BigDecimal("" + areaFail)
+                        .divide(new BigDecimal("" + areaTotal), BigDecimal.ROUND_HALF_UP, 4);
+            }
             FaLinkPool linkPool = new FaLinkPool();
             linkPool.setDefectiveRate(defectiveRate.stripTrailingZeros().toPlainString());
             linkPool.setCreateDate(time);

@@ -47,7 +47,7 @@ public class ProgressSchedul {
      * 自动捞取数据操作
      * 10/30 2/20 * * * ?
      */
-    @Scheduled(cron = "0/30 * * * * ?")
+    @Scheduled(cron = "0 0/1 * * * ? ")
     public void startProcessing() {
         Gson gson = new Gson();
         logger.info("startProcessing");
