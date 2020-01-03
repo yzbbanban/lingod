@@ -1,10 +1,6 @@
 package com.as.lingod.service.schedul;
 
-import com.as.lingod.domain.FaLinkDetail;
-import com.as.lingod.domain.FaLinkPool;
 import com.as.lingod.domain.FaSataWork;
-import com.as.lingod.service.FaLinkDetailService;
-import com.as.lingod.service.FaLinkPoolService;
 import com.as.lingod.service.FaSataWorkService;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -17,10 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -31,10 +25,6 @@ import java.util.*;
 public class ProgressSchedul {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-
-
-    @Autowired
-    private FaLinkPoolService linkPoolService;
 
     @Autowired
     private FaSataWorkService faSataWorkService;
