@@ -179,7 +179,8 @@ public class FaSataWorkServiceImpl extends ServiceImpl<FaSataWorkMapper, FaSataW
                     }
                 }
                 //若 mc 数据是对的，则直接相加
-                totalGEff = totalGEff.add(new BigDecimal(ldatum.getEfficiency()));
+                totalGEff = totalGEff.add(new BigDecimal(ldatum.getEfficiency())
+                        .multiply(new BigDecimal("" + ldatum.getPeople())));
                 totalPeo = totalPeo + ldatum.getPeople();
                 //更新为已操作
                 if (!faSataWorkService.update(t, ww)) {
