@@ -95,7 +95,7 @@ public class ProgressSchedul {
 
         for (Map<String, List<FaSataWork>> stringListMap : mapList) {
             try {
-//                faSataWorkService.saveData(stringListMap);
+                faSataWorkService.saveData(stringListMap);
                 Thread.sleep(2000);
             } catch (Exception e) {
                 logger.error("[保存失败error]{}", ExceptionUtils.getStackTrace(e));

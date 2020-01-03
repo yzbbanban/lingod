@@ -21,7 +21,7 @@
     <select id="getLastLink" resultType="com.as.lingod.domain.FaLinkPool">
         SELECT * FROM fa_link_pool
         WHERE xianbie=#{name}
-        ORDER BY createDate DESC
+        ORDER BY createDate DESC,ID DESC
         LIMIT 1
     </select>
 

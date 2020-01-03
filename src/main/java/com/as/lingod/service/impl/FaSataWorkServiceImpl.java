@@ -96,9 +96,6 @@ public class FaSataWorkServiceImpl extends ServiceImpl<FaSataWorkMapper, FaSataW
             Integer totalFail = 0;
             Integer totalPeo = 0;
             BigDecimal totalGEff = BigDecimal.ZERO;
-            //保存曲线数据
-            List<FaLinkPool> linkPools = new ArrayList<>();
-
             //用于保存的记录数据
             List<FaLinkDetail> linkList = new ArrayList<>();
             //记录结批数据
@@ -122,6 +119,8 @@ public class FaSataWorkServiceImpl extends ServiceImpl<FaSataWorkMapper, FaSataW
                         logger.error("[更新记录为已记录失败][{}]", ldatum);
                         throw new RuntimeException("[更新记录为已记录失败]");
                     }
+                    //下一条数据
+                    continue;
                 }
                 // 判断是不是正常结批数据
                 if (ldatum.getStatus() == 2 && ldatum.getFail() != 0
@@ -219,7 +218,7 @@ public class FaSataWorkServiceImpl extends ServiceImpl<FaSataWorkMapper, FaSataW
                             , BigDecimal.ROUND_HALF_UP, 4)
                             .stripTrailingZeros()
                             .toPlainString());
-            linkPools.add(linkPool);
+            poolList.add(linkPool);
             //添加结批数据
             int gpPass = 0;
             int gpFail = 0;
@@ -227,23 +226,25 @@ public class FaSataWorkServiceImpl extends ServiceImpl<FaSataWorkMapper, FaSataW
                 gpPass = gpPass + group.getPass();
                 gpFail = gpFail + group.getFail();
             }
-            //设置数据,当为结批时，多记录
-            FaLinkPool linkPool2 = new FaLinkPool();
-            linkPool2.setDefectiveRate(defectiveRate.stripTrailingZeros().toPlainString());
-            linkPool2.setCreateDate(time);
-            linkPool2.setXianbie(name);
-            linkPool2.setTotalPass(totalPass - gpPass);
-            linkPool2.setTotalFail(totalFail - gpFail);
-            linkPool2.setTotal(total);
-            linkPool2.setAreaTotal(areaTotal);
-            linkPool2.setAreaFail(areaFail);
-            linkPool.setTeamPerformance("0");
-            linkPools.add(linkPool);
-            //添加数据
-            poolList.add(linkPool);
+            if (groups.size() > 0) {
+                //设置数据,当为结批时，多记录
+                FaLinkPool linkPool2 = new FaLinkPool();
+                linkPool2.setDefectiveRate("0");
+                linkPool2.setCreateDate(time);
+                linkPool2.setXianbie(name);
+                linkPool2.setTotalPass(totalPass - gpPass);
+                linkPool2.setTotalFail(totalFail - gpFail);
+                linkPool2.setTotal(total - gpFail - gpPass);
+                linkPool2.setAreaTotal(areaTotal);
+                linkPool2.setAreaFail(areaFail);
+                linkPool2.setUsed(false);
+                linkPool2.setTeamPerformance("0");
+                //添加数据
+                poolList.add(linkPool2);
+            }
             logger.info("[计算完成结果poolList]{}", poolList);
             try {
-                boolean res = faLinkPoolService.saveLinkInfo(linkList, linkPools);
+                boolean res = faLinkPoolService.saveLinkInfo(linkList, poolList);
                 if (!res) {
                     logger.error("[数据未保存错误]");
                     throw new RuntimeException("error");

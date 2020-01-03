@@ -5,7 +5,7 @@ spring:
   application:
       name: lingod
   datasource:
-    url:  jdbc:mysql://127.0.0.1:3306/sms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&useUnicode=true&serverTimezone=UTC
+    url:  jdbc:mysql://127.0.0.1:3306/fastadmin2?useUnicode=true&characterEncoding=UTF-8&useSSL=false&useUnicode=true&serverTimezone=UTC
     username:  root
     password:  111111
     type: com.alibaba.druid.pool.DruidDataSource

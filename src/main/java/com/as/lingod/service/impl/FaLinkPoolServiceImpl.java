@@ -61,7 +61,7 @@ public class FaLinkPoolServiceImpl extends ServiceImpl<FaLinkPoolMapper, FaLinkP
         //保存数据
         if (CollectionUtils.isEmpty(linkList) || CollectionUtils.isEmpty(linkPool)) {
             logger.error("[保存记录数据失败][数据为空]");
-            return false;
+            throw new RuntimeException("数据为空error");
         }
         int id = 0;
         int id2 = 0;
@@ -96,7 +96,7 @@ public class FaLinkPoolServiceImpl extends ServiceImpl<FaLinkPoolMapper, FaLinkP
         boolean res = linkDetailService.insertBatch(linkList);
         if (!res) {
             logger.error("[保存记录详情数据失败]{}", linkList);
-            throw new RuntimeException("error");
+            throw new RuntimeException("保存记录详情数据失败error");
         }
         return true;
     }
