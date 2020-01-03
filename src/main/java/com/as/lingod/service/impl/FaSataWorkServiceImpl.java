@@ -1,10 +1,9 @@
 package com.as.lingod.service.impl;
 
-import com.as.lingod.dao.FaLinkPoolMapper;
+import com.as.lingod.dao.FaSataWorkMapper;
 import com.as.lingod.domain.FaLinkDetail;
 import com.as.lingod.domain.FaLinkPool;
 import com.as.lingod.domain.FaSataWork;
-import com.as.lingod.dao.FaSataWorkMapper;
 import com.as.lingod.service.FaLinkDetailService;
 import com.as.lingod.service.FaLinkPoolService;
 import com.as.lingod.service.FaSataWorkService;

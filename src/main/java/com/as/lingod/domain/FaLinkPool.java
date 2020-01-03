@@ -67,6 +67,10 @@ public class FaLinkPool implements Serializable {
      */
     private String groupJson;
 
+    /**
+     * 是否有效 true有效
+     */
+    private Boolean used;
 
     public Integer getId() {
         return id;
@@ -164,6 +168,14 @@ public class FaLinkPool implements Serializable {
         this.groupJson = groupJson;
     }
 
+    public Boolean getUsed() {
+        return used;
+    }
+
+    public void setUsed(Boolean used) {
+        this.used = used;
+    }
+
     @Override
     public String toString() {
         return "FaLinkPool{" +
@@ -175,6 +187,7 @@ public class FaLinkPool implements Serializable {
         ", xianbie=" + xianbie +
         ", totalPass=" + totalPass +
         ", totalFail=" + totalFail +
+        ", used=" + used +
         ", total=" + total +
         ", areaTotal=" + areaTotal +
         ", areaFail=" + areaFail +
