@@ -34,10 +34,12 @@ public class ProgressSchedul {
 
 
     /**
-     * 自动捞取数据操作
-     * 10/30 2/20 * * * ?
+     * 自动捞取数据操作  15min 执行一次
+     * 0 2/20 * * * ?
+     * 2020-01-04 01:17:00
+     * 2020-01-04 01:32:00
      */
-    @Scheduled(cron = "0 0/1 * * * ? ")
+    @Scheduled(cron = "02/15 * * * ?")
     public void startProcessing() {
         Gson gson = new Gson();
         logger.info("startProcessing");
@@ -96,7 +98,7 @@ public class ProgressSchedul {
         for (Map<String, List<FaSataWork>> stringListMap : mapList) {
             try {
                 faSataWorkService.saveData(stringListMap);
-                Thread.sleep(2000);
+                Thread.sleep(500);
             } catch (Exception e) {
                 logger.error("[保存失败error]{}", ExceptionUtils.getStackTrace(e));
                 e.printStackTrace();
