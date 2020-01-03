@@ -96,11 +96,39 @@ public class FaSataWorkServiceImpl extends ServiceImpl<FaSataWorkMapper, FaSataW
             Integer totalFail = 0;
             Integer totalPeo = 0;
             BigDecimal totalGEff = BigDecimal.ZERO;
+            //保存曲线数据
+            List<FaLinkPool> linkPools = new ArrayList<>();
+
             //用于保存的记录数据
             List<FaLinkDetail> linkList = new ArrayList<>();
+            //记录结批数据
+            Set<FaSataWork> groups = new HashSet<>(10);
 
             //计算上面数据 相同线别的不同组别
             for (FaSataWork ldatum : ldata) {
+                //更新状态为已处理，最后在处理
+                FaSataWork t = new FaSataWork();
+                t.setOut(true);
+                Wrapper<FaSataWork> ww = new EntityWrapper<>();
+                Map<String, Object> faSataWorkMap = new HashMap<>(1);
+                faSataWorkMap.put("id", ldatum.getId());
+                faSataWorkMap.put("`out`", 0);
+                ww.allEq(faSataWorkMap);
+                //判断是不是结批附加数据
+                if (ldatum.getStatus() == 2
+                        && ldatum.getPass() == 0
+                        && ldatum.getFail() == 0) {
+                    if (!faSataWorkService.update(t, ww)) {
+                        logger.error("[更新记录为已记录失败][{}]", ldatum);
+                        throw new RuntimeException("[更新记录为已记录失败]");
+                    }
+                }
+                // 判断是不是正常结批数据
+                if (ldatum.getStatus() == 2 && ldatum.getFail() != 0
+                        && ldatum.getPass() != 0) {
+                    //如果结批多加一条数据,且不计算不记录
+                    groups.add(ldatum);
+                }
                 //合并每组的好品和坏品数据
                 totalPass = totalPass + ldatum.getPass();
                 totalFail = totalFail + ldatum.getFail();
@@ -115,7 +143,10 @@ public class FaSataWorkServiceImpl extends ServiceImpl<FaSataWorkMapper, FaSataW
                     for (FaLinkDetail laskLinkDetail : lastLinkDetails) {
                         String group = laskLinkDetail.getGroup().trim();
                         //组别相同，计算，每个 list 中只有一个单独的组别，不会同时有多个相同组别进入
-                        if (group.equals(ldatum.getGroup().trim())) {
+                        //且 数据 不为0 ，则为结批另加的数据
+                        if (group.equals(ldatum.getGroup().trim())
+                                && ldatum.getFail() != 0
+                                && ldatum.getPass() != 0) {
                             //算出每组的区间产量 当前-上一笔
                             int lastPass = laskLinkDetail.getPass();
                             //组区间好品数
@@ -140,6 +171,8 @@ public class FaSataWorkServiceImpl extends ServiceImpl<FaSataWorkMapper, FaSataW
                             linkDetail.setFail(ldatum.getFail());
                             linkDetail.setPeople(ldatum.getPeople());
                             linkList.add(linkDetail);
+                            //只取一条数据
+                            break;
                         }
                     }
                     if (linkDetail.getAreaSPass() == null) {
@@ -149,14 +182,7 @@ public class FaSataWorkServiceImpl extends ServiceImpl<FaSataWorkMapper, FaSataW
                 //若 mc 数据是对的，则直接相加
                 totalGEff = totalGEff.add(new BigDecimal(ldatum.getEfficiency()));
                 totalPeo = totalPeo + ldatum.getPeople();
-                //更新状态为已处理
-                FaSataWork t = new FaSataWork();
-                t.setOut(true);
-                Wrapper<FaSataWork> ww = new EntityWrapper<>();
-                Map<String, Object> faSataWorkMap = new HashMap<>(1);
-                faSataWorkMap.put("id", ldatum.getId());
-                faSataWorkMap.put("`out`", 0);
-                ww.allEq(faSataWorkMap);
+                //更新为已操作
                 if (!faSataWorkService.update(t, ww)) {
                     logger.error("[更新记录为已记录失败][{}]", ldatum);
                     throw new RuntimeException("[更新记录为已记录失败]");
@@ -186,21 +212,38 @@ public class FaSataWorkServiceImpl extends ServiceImpl<FaSataWorkMapper, FaSataW
             linkPool.setTotal(total);
             linkPool.setAreaTotal(areaTotal);
             linkPool.setAreaFail(areaFail);
-
             //如：((aa1-aa0)/as  +  (ba1-ba0)/bs)  / (ap+bp)
             //团队效率：单个组别效率*是否结业*人力 ++ / 是否结业*人力 ++
-
             linkPool.setTeamPerformance(
-                    totalGEff
-                            .divide(new BigDecimal("" + totalPeo)
-                                    , BigDecimal.ROUND_HALF_UP, 4)
+                    totalGEff.divide(new BigDecimal("" + totalPeo)
+                            , BigDecimal.ROUND_HALF_UP, 4)
                             .stripTrailingZeros()
                             .toPlainString());
+            linkPools.add(linkPool);
+            //添加结批数据
+            int gpPass = 0;
+            int gpFail = 0;
+            for (FaSataWork group : groups) {
+                gpPass = gpPass + group.getPass();
+                gpFail = gpFail + group.getFail();
+            }
+            //设置数据,当为结批时，多记录
+            FaLinkPool linkPool2 = new FaLinkPool();
+            linkPool2.setDefectiveRate(defectiveRate.stripTrailingZeros().toPlainString());
+            linkPool2.setCreateDate(time);
+            linkPool2.setXianbie(name);
+            linkPool2.setTotalPass(totalPass - gpPass);
+            linkPool2.setTotalFail(totalFail - gpFail);
+            linkPool2.setTotal(total);
+            linkPool2.setAreaTotal(areaTotal);
+            linkPool2.setAreaFail(areaFail);
+            linkPool.setTeamPerformance("0");
+            linkPools.add(linkPool);
             //添加数据
             poolList.add(linkPool);
             logger.info("[计算完成结果poolList]{}", poolList);
             try {
-                boolean res = faLinkPoolService.saveLinkInfo(linkList, linkPool);
+                boolean res = faLinkPoolService.saveLinkInfo(linkList, linkPools);
                 if (!res) {
                     logger.error("[数据未保存错误]");
                     throw new RuntimeException("error");
@@ -208,8 +251,6 @@ public class FaSataWorkServiceImpl extends ServiceImpl<FaSataWorkMapper, FaSataW
             } catch (Exception e) {
                 logger.error("[数据保存错误]" + ExceptionUtils.getStackTrace(e));
             }
-
-
         }
     }
 

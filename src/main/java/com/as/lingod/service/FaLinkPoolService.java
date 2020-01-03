@@ -31,5 +31,5 @@ public interface FaLinkPoolService extends IService<FaLinkPool> {
      * @param linkPool l
      * @return r
      */
-    boolean saveLinkInfo(List<FaLinkDetail> linkList, FaLinkPool linkPool);
+    boolean saveLinkInfo(List<FaLinkDetail> linkList, List<FaLinkPool> linkPool);
 }

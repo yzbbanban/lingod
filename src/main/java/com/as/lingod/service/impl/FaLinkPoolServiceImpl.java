@@ -11,7 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,16 +57,41 @@ public class FaLinkPoolServiceImpl extends ServiceImpl<FaLinkPoolMapper, FaLinkP
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean saveLinkInfo(List<FaLinkDetail> linkList, FaLinkPool linkPool) {
+    public boolean saveLinkInfo(List<FaLinkDetail> linkList, List<FaLinkPool> linkPool) {
         //保存数据
-        int row = linkPoolMapper.insert(linkPool);
-        if (row <= 0) {
-            logger.error("[保存记录数据失败]{}", linkPool);
-            throw new RuntimeException("error");
+        if (CollectionUtils.isEmpty(linkList) || CollectionUtils.isEmpty(linkPool)) {
+            logger.error("[保存记录数据失败][数据为空]");
+            return false;
         }
-        int id = linkPool.getId();
+        int id = 0;
+        int id2 = 0;
+        Date time = null;
+        for (FaLinkPool faLinkPool : linkPool) {
+            int row = linkPoolMapper.insert(faLinkPool);
+            if (row <= 0) {
+                logger.error("[保存记录数据失败]{}", linkPool);
+                throw new RuntimeException("error");
+            }
+            time = faLinkPool.getCreateDate();
+        }
+        id = linkPool.get(0).getId();
         for (FaLinkDetail linkDetail : linkList) {
             linkDetail.setLinkId(id);
+        }
+        //丢一条结批数据
+        if (linkPool.size() > 1) {
+            id2 = linkPool.get(1).getId();
+            FaLinkDetail linkDetail = new FaLinkDetail();
+            linkDetail.setAreaPass(0);
+            linkDetail.setAreaSPass(0);
+            linkDetail.setAreaEff(BigDecimal.ZERO);
+            linkDetail.setCreateDate(time);
+            linkDetail.setPass(0);
+            linkDetail.setFail(0);
+            linkDetail.setGroup("");
+            linkDetail.setLinkId(id2);
+            linkDetail.setPeople(0);
+            linkList.add(linkDetail);
         }
         boolean res = linkDetailService.insertBatch(linkList);
         if (!res) {
