@@ -92,8 +92,8 @@ public class FaSataWorkServiceImpl extends ServiceImpl<FaSataWorkMapper, FaSataW
             List<FaLinkDetail> lastLinkDetails = linkDetailService.selectByMap(linkMap);
 
             List<FaSataWork> ldata = data.getValue();
-            Integer totalPass = lastLink.getTotalPass();
-            Integer totalFail = lastLink.getTotalFail();
+            Integer totalPass = 0;
+            Integer totalFail = 0;
             Integer totalPeo = 0;
             BigDecimal totalGEff = BigDecimal.ZERO;
             //用于保存的记录数据
@@ -165,9 +165,11 @@ public class FaSataWorkServiceImpl extends ServiceImpl<FaSataWorkMapper, FaSataW
             }
             //不同组别的时间相同：
             Date time = ldata.get(0).getJtime();
-
+            //当前总量
             Integer total = totalPass + totalFail;
+            //区间总量
             Integer areaTotal = total - lastLink.getTotal();
+            //区间坏品
             Integer areaFail = totalFail - lastLink.getTotalFail();
             //不良率
             BigDecimal defectiveRate = BigDecimal.ZERO;
