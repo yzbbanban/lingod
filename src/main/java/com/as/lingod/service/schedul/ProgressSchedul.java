@@ -35,11 +35,11 @@ public class ProgressSchedul {
 
     /**
      * 自动捞取数据操作  15min 执行一次
-     * 0 2/20 * * * ?
+     * 0 2/15 * * * ?
      * 2020-01-04 01:17:00
      * 2020-01-04 01:32:00
      */
-    @Scheduled(cron = "02/15 * * * ?")
+    @Scheduled(cron = "0 2/15 * * * ?")
     public void startProcessing() {
         Gson gson = new Gson();
         logger.info("startProcessing");
