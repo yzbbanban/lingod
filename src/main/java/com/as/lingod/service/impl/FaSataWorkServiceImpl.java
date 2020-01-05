@@ -71,7 +71,7 @@ public class FaSataWorkServiceImpl extends ServiceImpl<FaSataWorkMapper, FaSataW
         while (entry.hasNext()) {
             Map.Entry<String, List<FaSataWork>> data = entry.next();
             String name = data.getKey();
-            //获取上一条link数据
+            //获取上一条link数据（获取当天 0 点之后的数据）
             FaLinkPool lastLink = faLinkPoolService.getLastLink(name);
             if (lastLink == null) {
                 lastLink = new FaLinkPool();

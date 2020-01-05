@@ -47,7 +47,14 @@ public class ProgressSchedul {
         Wrapper<FaSataWork> w = new EntityWrapper<>();
         Map<String, Object> map = new HashMap<>(2);
         map.put("`out`", false);
-        w.allEq(map).orderAsc(Lists.newArrayList(J_TIME, XIAN_BIE));
+        //获取当天的数据
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.set(calendar1.get(Calendar.YEAR),
+                calendar1.get(Calendar.MONTH),
+                calendar1.get(Calendar.DAY_OF_MONTH),
+                0, 0, 0);
+        Date dtime = calendar1.getTime();
+        w.allEq(map).gt(J_TIME, dtime).orderAsc(Lists.newArrayList(J_TIME, XIAN_BIE));
         List<FaSataWork> list = faSataWorkService.selectList(w);
         if (CollectionUtils.isEmpty(list)) {
             //目前无数据需要记录，未开线

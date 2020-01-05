@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -45,7 +46,13 @@ public class FaLinkPoolServiceImpl extends ServiceImpl<FaLinkPoolMapper, FaLinkP
      */
     @Override
     public FaLinkPool getLastLink(String name) {
-        return linkPoolMapper.getLastLink(name);
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.set(calendar1.get(Calendar.YEAR),
+                calendar1.get(Calendar.MONTH),
+                calendar1.get(Calendar.DAY_OF_MONTH),
+                0, 0, 0);
+        Date dtime = calendar1.getTime();
+        return linkPoolMapper.getLastLink(name, dtime);
     }
 
     /**
