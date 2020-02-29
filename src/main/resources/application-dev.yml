@@ -5,9 +5,9 @@ spring:
   application:
       name: lingod
   datasource:
-    url:  jdbc:mysql://127.0.0.1:3306/fastadmin2?useUnicode=true&characterEncoding=UTF-8&useSSL=false&useUnicode=true&serverTimezone=UTC
+    url:  jdbc:mysql://180.76.116.191:3306/fastadmin2?useUnicode=true&characterEncoding=UTF-8&useSSL=false&useUnicode=true&serverTimezone=UTC
     username:  root
-    password:  111111
+    password:  nmwNGX67SpjPD58F
     type: com.alibaba.druid.pool.DruidDataSource
 mybatis:
   mapper-locations: classpath:mapper/*.xml

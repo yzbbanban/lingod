@@ -39,7 +39,7 @@ public class ProgressSchedul {
      * 2020-01-04 01:17:00
      * 2020-01-04 01:32:00
      */
-    @Scheduled(cron = "0 2/15 * * * ?")
+    @Scheduled(cron = "0 2/2 * * * ?")
     public void startProcessing() {
         Gson gson = new Gson();
         logger.info("startProcessing");

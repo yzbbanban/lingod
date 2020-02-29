@@ -74,6 +74,12 @@ public class FaLinkPoolServiceImpl extends ServiceImpl<FaLinkPoolMapper, FaLinkP
         int id2 = 0;
         Date time = null;
         for (FaLinkPool faLinkPool : linkPool) {
+            if (new BigDecimal(faLinkPool.getTeamPerformance()).compareTo(BigDecimal.ZERO) < 0) {
+                faLinkPool.setTeamPerformance("0");
+            }
+            if (new BigDecimal(faLinkPool.getDefectiveRate()).compareTo(BigDecimal.ZERO) < 0) {
+                faLinkPool.setDefectiveRate("0");
+            }
             int row = linkPoolMapper.insert(faLinkPool);
             if (row <= 0) {
                 logger.error("[保存记录数据失败]{}", linkPool);
